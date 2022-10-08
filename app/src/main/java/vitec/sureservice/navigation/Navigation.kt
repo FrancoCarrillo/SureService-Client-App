@@ -64,6 +64,11 @@ fun NavGraphBuilder.addLogin(
                 onLogIn = viewModel::login,
                 onNavigateToRegister = {
                     navController.navigate(Destinations.Signup.route)
+                    {
+                        popUpTo(Destinations.Login.route){
+                            inclusive = true
+                        }
+                    }
                 },
                 onDismissDialog = viewModel::hideErrorDialog
             )
@@ -84,7 +89,11 @@ fun NavGraphBuilder.addSignUp(
             state = viewModel.state.value,
             onSignUp = viewModel::signup,
             onLogIn = {
-                navController.navigate(Destinations.Login.route)
+                navController.navigate(Destinations.Login.route){
+                    popUpTo(Destinations.Signup.route){
+                        inclusive = true
+                    }
+                }
             },
             onDismissDialog = viewModel::hideErrorDialog
         )
