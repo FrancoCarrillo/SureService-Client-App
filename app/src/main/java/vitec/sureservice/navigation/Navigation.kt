@@ -9,8 +9,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import vitec.sureservice.data.model.Client
 import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
@@ -70,8 +68,7 @@ fun NavGraphBuilder.addLogin(
                         popUpTo(Destinations.Login.route)
                     }
                 },
-                onDismissDialog = viewModel::hideErrorDialog,
-                viewModel
+                onDismissDialog = viewModel::hideErrorDialog
             )
         }
     }
@@ -86,18 +83,31 @@ fun NavGraphBuilder.addSignUp(
     ){
         val viewModel: SignUpViewModel = hiltViewModel()
 
-        SignUp(
-            state = viewModel.state.value,
-            onSignUp = viewModel::signup,
-            onLogIn = {
-                navController.navigate(Destinations.Login.route){
-                    popUpTo(Destinations.Signup.route){
+        if(viewModel.state.value.successSignUp){
+            LaunchedEffect(key1 = Unit){
+                navController.navigate(
+                    Destinations.Home.route
+                ){
+                    popUpTo(Destinations.Login.route){
                         inclusive = true
                     }
                 }
-            },
-            onDismissDialog = viewModel::hideErrorDialog
-        )
+            }
+        } else {
+            SignUp(
+                state = viewModel.state.value,
+                onSignUp = viewModel::signup,
+                onLogIn = {
+                    navController.navigate(Destinations.Login.route){
+                        popUpTo(Destinations.Signup.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                onDismissDialog = viewModel::hideErrorDialog
+            )
+        }
+
     }
 }
 
@@ -109,7 +119,7 @@ fun NavGraphBuilder.addHome(navController: NavHostController) {
     ){
         val loginViewModel: LogInViewModel = hiltViewModel()
         MainScreen{
-            loginViewModel.clientDao.deleteClient(Client(1, loginViewModel.state.value.username))
+            loginViewModel.clientDao.deleteClient(loginViewModel.client)
             navController.navigate(Destinations.Login.route){
                 popUpTo(Destinations.Home.route){
                     inclusive = true

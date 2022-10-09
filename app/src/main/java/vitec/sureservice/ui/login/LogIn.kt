@@ -26,7 +26,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import vitec.sureservice.data.model.Client
 import vitec.sureservice.ui.common.EventDialog
 
 @SuppressLint("UnrememberedMutableState")
@@ -36,8 +35,7 @@ fun LogIn(
     state: LogInState,
     onLogIn: (String, String) -> Unit,
     onNavigateToRegister: () -> Unit,
-    onDismissDialog: () -> Unit,
-    viewModel: LogInViewModel
+    onDismissDialog: () -> Unit
 ) {
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }

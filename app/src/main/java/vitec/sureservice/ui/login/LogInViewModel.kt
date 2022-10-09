@@ -1,10 +1,7 @@
 package vitec.sureservice.ui.login
 
 import android.app.Application
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
@@ -18,19 +15,21 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
     val state: MutableState<LogInState> = mutableStateOf(LogInState())
     val clientDao = SureServiceDatabase.getInstance(application).clientDao()
 
-    var client = emptyList<Client>()
+    var clients = emptyList<Client>()
+
+    var client = Client()
 
     init {
         getAllClients()
     }
 
     fun getAllClients() {
-        client = clientDao.getAllClients()
+        clients = clientDao.getAllClients()
 
-        if(client.isNotEmpty()){
+        if(clients.isNotEmpty()){
             state.value.successLogIn = true
-            state.value.username = client[0].username
-            state.value.password = "password"
+            client.id = clients[0].id
+            client.username = clients[0].username
         }
     }
 
@@ -50,8 +49,9 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
         }
 
         viewModelScope.launch {
-            insertClient(Client(1, username))
-            state.value = state.value.copy(username = username, password = password)
+            client.id = 1
+            client.username = username
+            insertClient(client)
             state.value = state.value.copy(successLogIn = true)
         }
     }
