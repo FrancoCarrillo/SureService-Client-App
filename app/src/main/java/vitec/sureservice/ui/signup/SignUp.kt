@@ -128,7 +128,7 @@ fun SignUp(
                     singleLine = true,
                     label = { Text(text = "ID number") },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
+                        keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Next
                     ),
                     keyboardActions = KeyboardActions(
