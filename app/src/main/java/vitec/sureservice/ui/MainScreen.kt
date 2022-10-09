@@ -15,19 +15,19 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import vitec.sureservice.data.model.Client
 import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.navigation.Navigation
-import vitec.sureservice.ui.login.LogInViewModel
+import vitec.sureservice.ui.common.TopBar
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(logInViewModel: LogInViewModel) {
+fun MainScreen(Logout: ()-> Unit) {
     val navController = rememberAnimatedNavController()
 
     Scaffold(
-        bottomBar = { BottomBar(navController = navController, logInViewModel) }
+        bottomBar = { BottomBar(navController = navController) },
+        topBar = { TopBar(Logout) }
     ) {
         Navigation(Destinations.Service.route, navController)
     }
@@ -35,12 +35,11 @@ fun MainScreen(logInViewModel: LogInViewModel) {
 }
 
 @Composable
-fun BottomBar(navController: NavController, logInViewModel: LogInViewModel) {
+fun BottomBar(navController: NavController) {
     val screens = listOf(
         NavigationScreen.Service,
         NavigationScreen.Reservation,
-        NavigationScreen.Settings,
-        NavigationScreen.Logout
+        NavigationScreen.Settings
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -51,8 +50,7 @@ fun BottomBar(navController: NavController, logInViewModel: LogInViewModel) {
             AddItem(
                 screen = screen,
                 currentDestination = currentDestination,
-                navController = navController,
-                logInViewModel
+                navController = navController
             )
         }
     }
@@ -62,8 +60,7 @@ fun BottomBar(navController: NavController, logInViewModel: LogInViewModel) {
 fun RowScope.AddItem(
     screen: NavigationScreen,
     currentDestination: NavDestination?,
-    navController: NavController,
-    logInViewModel: LogInViewModel
+    navController: NavController
 ) {
     BottomNavigationItem(
         label = { Text(text = screen.title) },
@@ -76,17 +73,10 @@ fun RowScope.AddItem(
         } == true,
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled) ,
         onClick = {
-            if(screen.route=="logout"){
-                logInViewModel.clientDao.deleteClient(Client(1, "marco"))
-                navController.navigate("logout") {
-                    popUpTo("logout")
-                }
-            } else {
                 navController.navigate(screen.route) {
                     popUpTo(navController.graph.findStartDestination().id)
                     launchSingleTop = true
                 }
-            }
         }
     )
 
@@ -113,11 +103,5 @@ sealed class NavigationScreen(
         route = "settings",
         title = "Settings",
         icon = Icons.Default.Settings
-    )
-
-    object Logout: NavigationScreen(
-        route = "logout",
-        title = "Logout",
-        icon = Icons.Default.Logout
     )
 }

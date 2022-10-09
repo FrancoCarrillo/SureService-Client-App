@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import vitec.sureservice.data.model.Client
 import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
@@ -31,11 +32,10 @@ fun Navigation(startDestination: String, navController: NavHostController) {
         ){
             addLogin(navController)
             addSignUp(navController)
-            addHome()
+            addHome(navController)
             addService()
             addReservation()
             addSettings()
-            addLogout()
         }
     }
 }
@@ -67,9 +67,7 @@ fun NavGraphBuilder.addLogin(
                 onNavigateToRegister = {
                     navController.navigate(Destinations.Signup.route)
                     {
-                        popUpTo(Destinations.Login.route){
-                            inclusive = true
-                        }
+                        popUpTo(Destinations.Login.route)
                     }
                 },
                 onDismissDialog = viewModel::hideErrorDialog,
@@ -104,13 +102,20 @@ fun NavGraphBuilder.addSignUp(
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addHome() {
+fun NavGraphBuilder.addHome(navController: NavHostController) {
     composable(
         route = Destinations.Home.route,
         arguments = Destinations.Home.arguments
     ){
         val loginViewModel: LogInViewModel = hiltViewModel()
-        MainScreen(loginViewModel)
+        MainScreen{
+            loginViewModel.clientDao.deleteClient(Client(1, loginViewModel.state.value.username))
+            navController.navigate(Destinations.Login.route){
+                popUpTo(Destinations.Home.route){
+                    inclusive = true
+                }
+            }
+        }
     }
 }
 
@@ -141,17 +146,5 @@ fun NavGraphBuilder.addSettings() {
         arguments = Destinations.Settings.arguments
     ){
         Settings()
-    }
-}
-
-@ExperimentalAnimationApi
-fun NavGraphBuilder.addLogout() {
-    composable(
-        route = "logout",
-        arguments = Destinations.Logout.arguments
-    ){
-        val navController = rememberAnimatedNavController()
-
-        Navigation(Destinations.Login.route, navController)
     }
 }
