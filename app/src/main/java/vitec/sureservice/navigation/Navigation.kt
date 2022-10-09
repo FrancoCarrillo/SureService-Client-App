@@ -70,7 +70,8 @@ fun NavGraphBuilder.addLogin(
                         }
                     }
                 },
-                onDismissDialog = viewModel::hideErrorDialog
+                onDismissDialog = viewModel::hideErrorDialog,
+                viewModel
             )
         }
     }
