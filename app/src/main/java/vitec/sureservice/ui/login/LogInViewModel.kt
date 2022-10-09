@@ -50,6 +50,7 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
         }
 
         viewModelScope.launch {
+            insertClient(Client(1, username))
             state.value = state.value.copy(username = username, password = password)
             state.value = state.value.copy(successLogIn = true)
         }

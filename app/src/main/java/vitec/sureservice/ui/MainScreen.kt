@@ -15,17 +15,19 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import vitec.sureservice.data.model.Client
 import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.navigation.Navigation
+import vitec.sureservice.ui.login.LogInViewModel
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(logInViewModel: LogInViewModel) {
     val navController = rememberAnimatedNavController()
 
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = navController, logInViewModel) }
     ) {
         Navigation(Destinations.Service.route, navController)
     }
@@ -33,7 +35,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar(navController: NavController, logInViewModel: LogInViewModel) {
     val screens = listOf(
         NavigationScreen.Service,
         NavigationScreen.Reservation,
@@ -49,7 +51,8 @@ fun BottomBar(navController: NavController) {
             AddItem(
                 screen = screen,
                 currentDestination = currentDestination,
-                navController = navController
+                navController = navController,
+                logInViewModel
             )
         }
     }
@@ -59,7 +62,8 @@ fun BottomBar(navController: NavController) {
 fun RowScope.AddItem(
     screen: NavigationScreen,
     currentDestination: NavDestination?,
-    navController: NavController
+    navController: NavController,
+    logInViewModel: LogInViewModel
 ) {
     BottomNavigationItem(
         label = { Text(text = screen.title) },
@@ -72,9 +76,16 @@ fun RowScope.AddItem(
         } == true,
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled) ,
         onClick = {
-            navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
+            if(screen.route=="logout"){
+                logInViewModel.clientDao.deleteClient(Client(1, "marco"))
+                navController.navigate("logout") {
+                    popUpTo("logout")
+                }
+            } else {
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
             }
         }
     )

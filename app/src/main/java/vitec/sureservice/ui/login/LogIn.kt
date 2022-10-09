@@ -111,7 +111,6 @@ fun LogIn(
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                         focusManager.clearFocus()
-                                        viewModel.insertClient(Client(1, username))
                                         onLogIn(username, password)
                                     }),
                                 keyboardOptions = KeyboardOptions(
@@ -136,7 +135,6 @@ fun LogIn(
                             ) {
                                 Button(
                                     onClick = {
-                                        viewModel.insertClient(Client(1, username))
                                         onLogIn(username, password)
                                     },
                                     enabled= isValidate,

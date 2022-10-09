@@ -109,7 +109,8 @@ fun NavGraphBuilder.addHome() {
         route = Destinations.Home.route,
         arguments = Destinations.Home.arguments
     ){
-        MainScreen()
+        val loginViewModel: LogInViewModel = hiltViewModel()
+        MainScreen(loginViewModel)
     }
 }
 
@@ -149,6 +150,8 @@ fun NavGraphBuilder.addLogout() {
         route = "logout",
         arguments = Destinations.Logout.arguments
     ){
-        MainScreen()
+        val navController = rememberAnimatedNavController()
+
+        Navigation(Destinations.Login.route, navController)
     }
 }
