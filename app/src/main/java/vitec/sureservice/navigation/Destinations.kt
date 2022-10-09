@@ -11,12 +11,10 @@ sealed class Destinations(
 
     object Login: Destinations("login", emptyList())
     object Signup: Destinations("signup", emptyList())
-    object Home: Destinations(
-        "home",
-        listOf(
-            navArgument("username"){ type = NavType.StringType },
-            navArgument("password"){ type = NavType.StringType }
-        )
-    )
+    object Home: Destinations("home", emptyList())
+    object Service: Destinations("service", emptyList())
+    object Reservation: Destinations("reservation", emptyList())
+    object Settings: Destinations("settings", emptyList())
+    object Logout: Destinations("logout", emptyList())
 
 }

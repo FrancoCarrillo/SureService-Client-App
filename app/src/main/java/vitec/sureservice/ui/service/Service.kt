@@ -1,9 +1,9 @@
-package vitec.sureservice.ui.home
+package vitec.sureservice.ui.service
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun Home() {
-    Text(text = "Home")
+fun Service() {
+    Text(text = "Service")
 }

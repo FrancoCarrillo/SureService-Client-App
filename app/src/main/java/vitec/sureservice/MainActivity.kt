@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
+import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.navigation.Navigation
 import vitec.sureservice.ui.theme.SureServiceTheme
 
@@ -17,7 +19,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SureServiceTheme {
-                Navigation()
+                val navController = rememberAnimatedNavController()
+
+                Navigation(Destinations.Login.route, navController)
             }
         }
     }

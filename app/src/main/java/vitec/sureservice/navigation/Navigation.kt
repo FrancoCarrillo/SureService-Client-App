@@ -10,28 +10,32 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import vitec.sureservice.ui.home.Home
+import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
+import vitec.sureservice.ui.reservation.Reservation
+import vitec.sureservice.ui.service.Service
+import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
 
 
 @ExperimentalAnimationApi
 @Composable
-fun Navigation() {
-    val navController = rememberAnimatedNavController()
+fun Navigation(startDestination: String, navController: NavHostController) {
 
     BoxWithConstraints {
         AnimatedNavHost(
             navController = navController,
-            startDestination = Destinations.Login.route
+            startDestination = startDestination
         ){
             addLogin(navController)
-
             addSignUp(navController)
-
             addHome()
+            addService()
+            addReservation()
+            addSettings()
+            addLogout()
         }
     }
 }
@@ -45,13 +49,11 @@ fun NavGraphBuilder.addLogin(
         route = Destinations.Login.route,
     ){
         val viewModel: LogInViewModel = hiltViewModel()
-        val username = viewModel.state.value.username
-        val password = viewModel.state.value.password
 
         if(viewModel.state.value.successLogIn){
             LaunchedEffect(key1 = Unit){
                 navController.navigate(
-                    Destinations.Home.route + "/$username" + "/$password"
+                    Destinations.Home.route
                 ){
                     popUpTo(Destinations.Login.route){
                         inclusive = true
@@ -104,13 +106,49 @@ fun NavGraphBuilder.addSignUp(
 @ExperimentalAnimationApi
 fun NavGraphBuilder.addHome() {
     composable(
-        route = Destinations.Home.route + "/{username}" + "/{password}",
+        route = Destinations.Home.route,
         arguments = Destinations.Home.arguments
-    ){ backStackEntry ->
+    ){
+        MainScreen()
+    }
+}
 
-        val username = backStackEntry.arguments?.getString("username") ?: ""
-        val password = backStackEntry.arguments?.getString("password") ?: ""
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addService() {
+    composable(
+        route = Destinations.Service.route,
+        arguments = Destinations.Service.arguments
+    ){
+        Service()
+    }
+}
 
-        Home(username, password)
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addReservation() {
+    composable(
+        route = Destinations.Reservation.route,
+        arguments = Destinations.Reservation.arguments
+    ){
+        Reservation()
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addSettings() {
+    composable(
+        route = Destinations.Settings.route,
+        arguments = Destinations.Settings.arguments
+    ){
+        Settings()
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addLogout() {
+    composable(
+        route = "logout",
+        arguments = Destinations.Logout.arguments
+    ){
+        MainScreen()
     }
 }
