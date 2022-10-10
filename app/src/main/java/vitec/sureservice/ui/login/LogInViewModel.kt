@@ -18,7 +18,7 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
 
     val state: MutableState<LogInState> = mutableStateOf(LogInState())
     val clientDao = SureServiceDatabase.getInstance(application).clientDao()
-    val loginIterface = ApiClient.build()
+    val loginInterface = ApiClient.build()
     var clients = emptyList<Client>()
     var client = Client()
 
@@ -48,7 +48,7 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
 
         viewModelScope.launch {
             try {
-                val login = loginIterface.loginClient(LoginDto(username, password))
+                val login = loginInterface.loginClient(LoginDto(username, password))
 
                 login.enqueue(object: Callback<Client>{
                     override fun onResponse(call: Call<Client>, response: Response<Client>) {
