@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             SureServiceTheme {
                 val navController = rememberAnimatedNavController()
 
-                Navigation(Destinations.Login.route, navController)
+                Navigation(navController, Destinations.Login.route, navController)
             }
         }
     }

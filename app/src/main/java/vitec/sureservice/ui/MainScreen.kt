@@ -13,23 +13,22 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.navigation.Navigation
-import vitec.sureservice.ui.common.TopBar
 
 @ExperimentalAnimationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(Logout: ()-> Unit) {
+fun MainScreen(navControllerFather: NavHostController) {
     val navController = rememberAnimatedNavController()
 
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) },
-        topBar = { TopBar(Logout) }
+        bottomBar = { BottomBar(navController = navController) }
     ) {
-        Navigation(Destinations.Service.route, navController)
+        Navigation(navControllerFather, Destinations.Service.route, navController)
     }
 
 }

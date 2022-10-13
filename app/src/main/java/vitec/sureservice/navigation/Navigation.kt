@@ -21,7 +21,7 @@ import vitec.sureservice.ui.signup.SignUpViewModel
 
 @ExperimentalAnimationApi
 @Composable
-fun Navigation(startDestination: String, navController: NavHostController) {
+fun Navigation(navControllerFather: NavHostController, startDestination: String, navController: NavHostController) {
 
     BoxWithConstraints {
         AnimatedNavHost(
@@ -30,10 +30,10 @@ fun Navigation(startDestination: String, navController: NavHostController) {
         ){
             addLogin(navController)
             addSignUp(navController)
-            addHome(navController)
+            addHome(navControllerFather)
             addService()
             addReservation()
-            addSettings()
+            addSettings(navControllerFather)
         }
     }
 }
@@ -112,20 +112,12 @@ fun NavGraphBuilder.addSignUp(
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addHome(navController: NavHostController) {
+fun NavGraphBuilder.addHome(navControllerFather: NavHostController) {
     composable(
         route = Destinations.Home.route,
         arguments = Destinations.Home.arguments
     ){
-        val loginViewModel: LogInViewModel = hiltViewModel()
-        MainScreen{
-            loginViewModel.clientDao.deleteClient(loginViewModel.client)
-            navController.navigate(Destinations.Login.route){
-                popUpTo(Destinations.Home.route){
-                    inclusive = true
-                }
-            }
-        }
+        MainScreen(navControllerFather)
     }
 }
 
@@ -150,11 +142,19 @@ fun NavGraphBuilder.addReservation() {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addSettings() {
+fun NavGraphBuilder.addSettings(navControllerFather: NavHostController) {
     composable(
         route = Destinations.Settings.route,
         arguments = Destinations.Settings.arguments
     ){
-        Settings()
+        val loginViewModel: LogInViewModel = hiltViewModel()
+        Settings{
+            loginViewModel.clientDao.deleteClient(loginViewModel.client)
+            navControllerFather.navigate(Destinations.Login.route){
+                popUpTo(Destinations.Home.route){
+                    inclusive = true
+                }
+            }
+        }
     }
 }
