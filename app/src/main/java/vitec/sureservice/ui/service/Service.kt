@@ -1,9 +1,137 @@
 package vitec.sureservice.ui.service
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import vitec.sureservice.R
+import vitec.sureservice.data.model.Technician
+import vitec.sureservice.ui.theme.BlueColor
+import vitec.sureservice.ui.theme.LilaColor
 
 @Composable
-fun Service() {
-    Text(text = "Service")
+fun Service(serviceViewModel: ServiceViewModel)
+{
+    var search by remember { mutableStateOf("") }
+    var place by remember { mutableStateOf("") }
+    var rating by remember { mutableStateOf("") }
+    var enabled = search.isNotEmpty()
+
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        OutlinedTextField(value = search, onValueChange = {search = it},
+            modifier = Modifier
+                .fillMaxWidth(),
+            singleLine = true,
+            label = {Text(text = "Search")}
+        )
+        OutlinedTextField(value = place, onValueChange = {place = it},
+            modifier = Modifier
+                .fillMaxWidth(),
+            singleLine = true,
+            label = {Text(text = "Location")}
+        )
+        OutlinedTextField(value = rating, onValueChange = {rating = it},
+            modifier = Modifier
+                .fillMaxWidth(),
+            singleLine = true,
+            label = {Text(text = "Rating (0-5)")},
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Button(
+            onClick = { serviceViewModel.getAllTechnicians() },
+            enabled= enabled,
+            modifier = Modifier.fillMaxWidth()
+        )
+        {
+            Text(text = "SEARCH")
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        val technicians: List<Technician> by serviceViewModel.technicians.observeAsState(listOf())
+        
+        LazyColumn {
+            items(technicians) { technician ->
+                TechnicianCard(technician)
+            }
+        }
+    }
+}
+
+@Composable
+fun TechnicianCard(technician: Technician)
+{
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = 3.dp
+    ) {
+        Column (modifier = Modifier.padding(16.dp),  verticalArrangement = Arrangement.spacedBy(25.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                ) {
+                Image(
+                    painter = rememberImagePainter("https://www.maybelline-ma.com/~/media/mny/latam/panama/consejos-de-maquillaje/maquillaje-cara-cuadrada.jpg?h=735&w=735&la=es-PA&hash=6FA3888C30A756C0EE398F69EF0B215FBBA054A4"),
+                    contentDescription = "Foto de perfil",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                )
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = "${technician.name} ${technician.last_name}",
+                        fontSize = 20.sp, fontWeight = FontWeight.Medium
+                    )
+                    Valoration(technician.valoration)
+                }
+            }
+            Column (verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text(text = "Profession: ${technician.speciality.name}", fontSize = 14.sp)
+                Text(text = "Location: ${technician.district}", fontSize = 14.sp)
+            }
+            TextButton(onClick = { /*TODO*/ }) {
+                Text(text = "MORE INFO", fontWeight = FontWeight.Bold, color = BlueColor)
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(10.dp))
+}
+
+@Composable
+fun Valoration(valoration: Int) {
+    Row(modifier = Modifier.padding(top = 5.dp)) {
+        for (i in 1..5) {
+            Icon(
+                Icons.Filled.Favorite,
+                contentDescription = null,
+                tint = if (i <= valoration) BlueColor else LilaColor,
+                modifier = Modifier.size(10.dp)
+            )
+        }
+    }
 }

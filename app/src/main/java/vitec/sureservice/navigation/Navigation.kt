@@ -14,6 +14,7 @@ import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
+import vitec.sureservice.ui.service.ServiceViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
@@ -135,7 +136,8 @@ fun NavGraphBuilder.addService() {
         route = Destinations.Service.route,
         arguments = Destinations.Service.arguments
     ){
-        Service()
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        Service(serviceViewModel)
     }
 }
 

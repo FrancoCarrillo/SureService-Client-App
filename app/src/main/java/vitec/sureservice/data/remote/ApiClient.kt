@@ -7,6 +7,7 @@ object ApiClient {
     private const val API_BASE_URL = "https://sure-service.herokuapp.com/api/v1/"
 
     private var clientInterface: ClientInterface? = null
+    private var technicianInterface: TechnicianInterface? = null
 
     fun build(): ClientInterface {
         val retrofit = Retrofit.Builder()
@@ -16,5 +17,15 @@ object ApiClient {
 
         clientInterface = retrofit.create(ClientInterface::class.java)
         return clientInterface as ClientInterface
+    }
+
+    fun buildTechnician(): TechnicianInterface {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        technicianInterface = retrofit.create(TechnicianInterface::class.java)
+        return technicianInterface as TechnicianInterface
     }
 }
