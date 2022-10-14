@@ -2,7 +2,9 @@ package vitec.sureservice.data.remote
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import vitec.sureservice.data.model.Client
 import vitec.sureservice.ui.login.LoginDto
 import vitec.sureservice.ui.signup.SignupDto
@@ -14,4 +16,8 @@ interface ClientInterface {
 
     @POST("clients/sign-up")
     fun signupClient(@Body signupDto: SignupDto): Call<Client>
+
+
+    @GET("clients/{clientId}")
+    fun getClientById(@Path("clientId") clientId: Long): Call<Client>
 }

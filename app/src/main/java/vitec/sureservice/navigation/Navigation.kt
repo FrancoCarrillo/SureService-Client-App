@@ -14,6 +14,7 @@ import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
+import vitec.sureservice.ui.settings.SettingViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
@@ -148,7 +149,9 @@ fun NavGraphBuilder.addSettings(navControllerFather: NavHostController) {
         arguments = Destinations.Settings.arguments
     ){
         val loginViewModel: LogInViewModel = hiltViewModel()
-        Settings{
+        val viewModel: SettingViewModel = hiltViewModel()
+
+        Settings(viewModel.client){
             loginViewModel.clientDao.deleteClient(loginViewModel.client)
             navControllerFather.navigate(Destinations.Login.route){
                 popUpTo(Destinations.Home.route){

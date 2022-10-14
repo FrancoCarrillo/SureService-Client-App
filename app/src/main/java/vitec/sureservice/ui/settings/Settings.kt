@@ -15,22 +15,14 @@ import vitec.sureservice.R
 import vitec.sureservice.data.model.Client
 
 @Composable
-fun Settings(Logout: ()-> Unit) {
-
-    val client = Client()
-    client.username = "CuevaL"
-    client.name = "Walter"
-    client.last_name = "Cueva"
-    client.telephone_number = "98890964"
-    client.dni = "74648421"
-    client.email = "cueva@lamdas.com"
+fun Settings(client: Client,Logout: ()-> Unit) {
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 30.dp),
     ) {
-
+        Spacer(modifier = Modifier.height(15.dp))
         Image(
             modifier = Modifier.fillMaxWidth(),
             painter = painterResource(id = R.drawable.profile_img),
