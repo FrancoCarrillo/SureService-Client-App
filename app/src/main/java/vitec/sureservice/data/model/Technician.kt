@@ -10,4 +10,6 @@ class Technician(
     val valoration: Int,
     val district: String,
     val speciality: Speciality
-)
+) {
+    constructor(): this(0,"","","","","",0,"", speciality = Speciality())
+}

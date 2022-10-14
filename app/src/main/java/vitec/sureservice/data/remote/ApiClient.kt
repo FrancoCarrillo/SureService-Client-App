@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val API_BASE_URL = "https://sure-service.herokuapp.com/api/v1/"
+    private const val API_BASE_URL = "http://sure-service.herokuapp.com/api/v1/"
 
     private var clientInterface: ClientInterface? = null
     private var technicianInterface: TechnicianInterface? = null

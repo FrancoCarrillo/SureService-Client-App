@@ -18,6 +18,7 @@ import vitec.sureservice.ui.service.ServiceViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
+import vitec.sureservice.ui.technicianProfile.TechnicianProfile
 
 
 @ExperimentalAnimationApi
@@ -32,9 +33,10 @@ fun Navigation(startDestination: String, navController: NavHostController) {
             addLogin(navController)
             addSignUp(navController)
             addHome(navController)
-            addService()
+            addService(navController)
             addReservation()
             addSettings()
+            addTechnicianProfile()
         }
     }
 }
@@ -131,13 +133,17 @@ fun NavGraphBuilder.addHome(navController: NavHostController) {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addService() {
+fun NavGraphBuilder.addService(navController: NavHostController) {
     composable(
         route = Destinations.Service.route,
         arguments = Destinations.Service.arguments
     ){
         val serviceViewModel: ServiceViewModel = hiltViewModel()
-        Service(serviceViewModel)
+        Service(serviceViewModel){
+            navController.navigate(
+                Destinations.TechnicianProfile.createRoute(it)
+            )
+        }
     }
 }
 
@@ -158,5 +164,16 @@ fun NavGraphBuilder.addSettings() {
         arguments = Destinations.Settings.arguments
     ){
         Settings()
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addTechnicianProfile() {
+    composable(
+        route = Destinations.TechnicianProfile.route
+    ){ navBackStackEntry ->
+        val technicianId = navBackStackEntry.arguments?.getString("technicianId")
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        TechnicianProfile(Integer.parseInt(technicianId!!), serviceViewModel)
     }
 }

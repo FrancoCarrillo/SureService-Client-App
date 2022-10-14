@@ -14,7 +14,7 @@ import vitec.sureservice.data.remote.ApiClient
 
 class ServiceViewModel(application: Application): AndroidViewModel(application) {
 
-    val technicianInterface = ApiClient.buildTechnician()
+    private val technicianInterface = ApiClient.buildTechnician()
 
     private var _technicians = MutableLiveData<List<Technician>>()
     val technicians get() = _technicians

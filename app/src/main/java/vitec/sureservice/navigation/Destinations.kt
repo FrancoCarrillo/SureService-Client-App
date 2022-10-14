@@ -1,8 +1,6 @@
 package vitec.sureservice.navigation
 
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 
 sealed class Destinations(
     val route: String,
@@ -16,5 +14,7 @@ sealed class Destinations(
     object Reservation: Destinations("reservation", emptyList())
     object Settings: Destinations("settings", emptyList())
     object Logout: Destinations("logout", emptyList())
-
+    object TechnicianProfile: Destinations("technicianProfile/{technicianId}", emptyList()){
+        fun createRoute(technicianId: Int) = "technicianProfile/$technicianId"
+    }
 }

@@ -29,8 +29,10 @@ import vitec.sureservice.ui.theme.BlueColor
 import vitec.sureservice.ui.theme.LilaColor
 
 @Composable
-fun Service(serviceViewModel: ServiceViewModel)
-{
+fun Service(
+    serviceViewModel: ServiceViewModel,
+    goToTechnicianProfile: (Int) -> Unit
+){
     var search by remember { mutableStateOf("") }
     var place by remember { mutableStateOf("") }
     var rating by remember { mutableStateOf("") }
@@ -78,15 +80,17 @@ fun Service(serviceViewModel: ServiceViewModel)
         
         LazyColumn {
             items(technicians) { technician ->
-                TechnicianCard(technician)
+                TechnicianCard(technician, goToTechnicianProfile)
             }
         }
     }
 }
 
 @Composable
-fun TechnicianCard(technician: Technician)
-{
+fun TechnicianCard(
+    technician: Technician,
+    goToTechnicianProfile: (Int) -> Unit
+){
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = 3.dp
@@ -114,7 +118,7 @@ fun TechnicianCard(technician: Technician)
                 Text(text = "Profession: ${technician.speciality.name}", fontSize = 14.sp)
                 Text(text = "Location: ${technician.district}", fontSize = 14.sp)
             }
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { goToTechnicianProfile(technician.id) }) {
                 Text(text = "MORE INFO", fontWeight = FontWeight.Bold, color = BlueColor)
             }
         }
