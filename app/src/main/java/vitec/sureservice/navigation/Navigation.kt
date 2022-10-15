@@ -9,11 +9,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import vitec.sureservice.navigation.setting.SettingNavigation
 import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
+import vitec.sureservice.ui.settings.SettingViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
@@ -21,7 +24,7 @@ import vitec.sureservice.ui.signup.SignUpViewModel
 
 @ExperimentalAnimationApi
 @Composable
-fun Navigation(startDestination: String, navController: NavHostController) {
+fun Navigation(navControllerFather: NavHostController, startDestination: String, navController: NavHostController) {
 
     BoxWithConstraints {
         AnimatedNavHost(
@@ -30,10 +33,10 @@ fun Navigation(startDestination: String, navController: NavHostController) {
         ){
             addLogin(navController)
             addSignUp(navController)
-            addHome(navController)
+            addHome(navControllerFather)
             addService()
             addReservation()
-            addSettings()
+            addSettings(navControllerFather)
         }
     }
 }
@@ -112,20 +115,12 @@ fun NavGraphBuilder.addSignUp(
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addHome(navController: NavHostController) {
+fun NavGraphBuilder.addHome(navControllerFather: NavHostController) {
     composable(
         route = Destinations.Home.route,
         arguments = Destinations.Home.arguments
     ){
-        val loginViewModel: LogInViewModel = hiltViewModel()
-        MainScreen{
-            loginViewModel.clientDao.deleteClient(loginViewModel.client)
-            navController.navigate(Destinations.Login.route){
-                popUpTo(Destinations.Home.route){
-                    inclusive = true
-                }
-            }
-        }
+        MainScreen(navControllerFather)
     }
 }
 
@@ -150,11 +145,12 @@ fun NavGraphBuilder.addReservation() {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addSettings() {
+fun NavGraphBuilder.addSettings(navControllerFather: NavHostController) {
     composable(
         route = Destinations.Settings.route,
         arguments = Destinations.Settings.arguments
     ){
-        Settings()
+        val navController = rememberAnimatedNavController()
+        SettingNavigation(navControllerFather = navControllerFather, navController = navController)
     }
 }
