@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -12,7 +13,7 @@ import retrofit2.Response
 import vitec.sureservice.data.model.Technician
 import vitec.sureservice.data.remote.ApiClient
 
-class ServiceViewModel(application: Application): AndroidViewModel(application) {
+class ServiceViewModel: ViewModel() {
 
     private val technicianInterface = ApiClient.buildTechnician()
 

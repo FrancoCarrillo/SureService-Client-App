@@ -50,7 +50,7 @@ fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel)
                     text = "${technician.name} ${technician.last_name}",
                     fontSize = 24.sp, fontWeight = FontWeight.Medium
                 )
-                Valoration(3)
+                Valoration(technician.valoration)
                 Text(text = "Profession: ${technician.speciality.name}", fontSize = 14.sp)
                 Text(text = "Location: ${technician.district}", fontSize = 14.sp)
             }
@@ -61,6 +61,11 @@ fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel)
         ) {
             Text(text = "BOOK APPOINTMENT")
         }
+        Text(
+            text = "Description",
+            fontSize = 24.sp, fontWeight = FontWeight.Medium
+        )
+        Text(text = "${technician.professional_profile}", fontSize = 14.sp)
     }
 }
 
