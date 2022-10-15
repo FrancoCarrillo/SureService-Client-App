@@ -1,6 +1,7 @@
 package vitec.sureservice.navigation
 
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavArgs
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
@@ -15,6 +16,6 @@ sealed class Destinations(
     object Service: Destinations("service", emptyList())
     object Reservation: Destinations("reservation", emptyList())
     object Settings: Destinations("settings", emptyList())
-    object Logout: Destinations("logout", emptyList())
+    object SettingChangeInformation: Destinations("settings_change_information", emptyList())
 
 }
