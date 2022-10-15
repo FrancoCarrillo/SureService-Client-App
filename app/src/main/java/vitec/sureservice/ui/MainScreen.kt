@@ -19,8 +19,8 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.navigation.Navigation
 
-@ExperimentalAnimationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalAnimationApi
 @Composable
 fun MainScreen(navControllerFather: NavHostController) {
     val navController = rememberAnimatedNavController()

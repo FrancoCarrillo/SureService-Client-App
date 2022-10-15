@@ -15,7 +15,7 @@ import vitec.sureservice.R
 import vitec.sureservice.data.model.Client
 
 @Composable
-fun Settings(client: Client,Logout: ()-> Unit) {
+fun Settings(client: Client,Logout: ()-> Unit, ChangeInformation: (Long)-> Unit) {
 
     Column(
         modifier = Modifier
@@ -55,7 +55,7 @@ fun Settings(client: Client,Logout: ()-> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ })
+            onClick = { ChangeInformation(client.id) })
         {
             Text(text = "Edit Profile")
         }

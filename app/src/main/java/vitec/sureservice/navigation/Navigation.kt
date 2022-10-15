@@ -9,6 +9,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import vitec.sureservice.navigation.setting.SettingNavigation
 import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
@@ -148,16 +150,7 @@ fun NavGraphBuilder.addSettings(navControllerFather: NavHostController) {
         route = Destinations.Settings.route,
         arguments = Destinations.Settings.arguments
     ){
-        val loginViewModel: LogInViewModel = hiltViewModel()
-        val viewModel: SettingViewModel = hiltViewModel()
-
-        Settings(viewModel.client){
-            loginViewModel.clientDao.deleteClient(loginViewModel.client)
-            navControllerFather.navigate(Destinations.Login.route){
-                popUpTo(Destinations.Home.route){
-                    inclusive = true
-                }
-            }
-        }
+        val navController = rememberAnimatedNavController()
+        SettingNavigation(navControllerFather = navControllerFather, navController = navController)
     }
 }
