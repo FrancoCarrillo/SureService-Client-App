@@ -1,6 +1,9 @@
 package vitec.sureservice.navigation
 
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavArgs
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 sealed class Destinations(
     val route: String,
@@ -27,4 +30,7 @@ sealed class Destinations(
                         technicianDistrict: String,
                         serviceRequestId: Int) = "detailBookAnAppointment/$date/$technicianName/$technicianLastName/$technicianDistrict/$serviceRequestId"
     }
+    
+    object SettingChangeInformation: Destinations("settings_change_information", emptyList())
+
 }

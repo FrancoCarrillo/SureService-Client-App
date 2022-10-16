@@ -19,7 +19,7 @@ data class Client (
     var dni: String = ""
 
     @Ignore
-    val email: String = ""
+    var email: String = ""
 
     @Ignore
     var last_name: String = ""
