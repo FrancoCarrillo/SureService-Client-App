@@ -1,8 +1,6 @@
 package vitec.sureservice.ui.service
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,6 +31,48 @@ class ServiceViewModel: ViewModel() {
                         response: Response<List<Technician>>
                     ) { technicians.postValue(response.body()!!) }
 
+                    override fun onFailure(call: Call<List<Technician>>, t: Throwable) {
+                        Log.d("Fail", t.toString())
+                    }
+                })
+            }
+            catch (e: Exception) {
+                Log.e("Error retrieve technic.", e.toString())
+            }
+        }
+    }
+
+    fun getTechniciansBySpeciality(specialityId: Int, district: String, rating: String) {
+        viewModelScope.launch {
+            try {
+                val getAllTechniciansBySpeciality = technicianInterface?.getTechniciansBySpeciality(specialityId)
+                getAllTechniciansBySpeciality?.enqueue(object: Callback<List<Technician>> {
+                    override fun onResponse(
+                        call: Call<List<Technician>>,
+                        response: Response<List<Technician>>
+                    )
+                    {
+                        var auxResponse: MutableList<Technician> = mutableListOf()
+                        auxResponse.addAll(response.body()!!)
+
+                        if (district != ""){
+                            auxResponse.forEach {
+                                    technician ->
+                                if (!technician.district.contains(district)){
+                                    auxResponse.remove(technician)
+                                }
+                            }
+                        }
+                        if (rating != "") {
+                            auxResponse.forEach {
+                                technician ->
+                                if (technician.valoration != rating.toInt()){
+                                    auxResponse.remove(technician)
+                                }
+                            }
+                        }
+                        technicians.postValue(auxResponse)
+                    }
                     override fun onFailure(call: Call<List<Technician>>, t: Throwable) {
                         Log.d("Fail", t.toString())
                     }

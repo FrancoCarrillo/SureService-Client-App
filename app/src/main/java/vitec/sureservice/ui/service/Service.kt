@@ -1,15 +1,18 @@
 package vitec.sureservice.ui.service
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.*
@@ -17,26 +20,31 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import vitec.sureservice.R
+import vitec.sureservice.data.model.Speciality
 import vitec.sureservice.data.model.Technician
 import vitec.sureservice.ui.theme.BlueColor
 import vitec.sureservice.ui.theme.LilaColor
 
+var specialitySelected by mutableStateOf(0)
+
 @Composable
 fun Service(
     serviceViewModel: ServiceViewModel,
+    specialityViewModel: SpecialityViewModel,
     goToTechnicianProfile: (Int) -> Unit
 ){
-    var search by remember { mutableStateOf("") }
     var place by remember { mutableStateOf("") }
     var rating by remember { mutableStateOf("") }
-    var enabled = search.isNotEmpty()
+    var enabled = specialitySelected != 0
+
+    val specialities: List<Speciality> by specialityViewModel.specialities.observeAsState(listOf())
+    val technicians: List<Technician> by serviceViewModel.technicians.observeAsState(listOf())
 
     Column (
         modifier = Modifier
@@ -46,12 +54,7 @@ fun Service(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        OutlinedTextField(value = search, onValueChange = {search = it},
-            modifier = Modifier
-                .fillMaxWidth(),
-            singleLine = true,
-            label = {Text(text = "Search")}
-        )
+        Spinner(specialities)
         OutlinedTextField(value = place, onValueChange = {place = it},
             modifier = Modifier
                 .fillMaxWidth(),
@@ -66,8 +69,8 @@ fun Service(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Button(
-            onClick = { serviceViewModel.getAllTechnicians() },
-            enabled= enabled,
+            onClick = { serviceViewModel.getTechniciansBySpeciality(specialitySelected, place, rating) },
+            enabled = enabled,
             modifier = Modifier.fillMaxWidth()
         )
         {
@@ -75,12 +78,46 @@ fun Service(
         }
 
         Spacer(modifier = Modifier.height(4.dp))
-
-        val technicians: List<Technician> by serviceViewModel.technicians.observeAsState(listOf())
         
         LazyColumn {
             items(technicians) { technician ->
                 TechnicianCard(technician, goToTechnicianProfile)
+            }
+        }
+    }
+}
+
+@Composable
+fun Spinner (items: List<Speciality>) {
+    var specialityText by remember { mutableStateOf("What are you looking for?") }
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(Modifier.fillMaxWidth()) {
+        Row(Modifier
+            .fillMaxWidth()
+            .clickable {
+                expanded = !expanded
+            }
+            .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+        ) {
+            Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(text = specialityText, fontSize = 16.sp, modifier = Modifier.padding(end = 8.dp))
+                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
+            }
+            DropdownMenu(
+                modifier = Modifier.fillMaxWidth(),
+                expanded = expanded,
+                onDismissRequest = { expanded = false })
+            {
+                items.forEach {
+                        item -> DropdownMenuItem(onClick = {
+                    expanded = false
+                    specialityText = item.name
+                    specialitySelected = item.id
+                }) {
+                    Text(text = item.name)
+                }
+                }
             }
         }
     }

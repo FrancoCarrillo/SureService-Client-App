@@ -9,6 +9,7 @@ object ApiClient {
     private var clientInterface: ClientInterface? = null
     private var technicianInterface: TechnicianInterface? = null
     private var serviceRequestInterface: ServiceRequestInterface? = null
+    private var specialityInterface: SpecialityInterface? = null
 
     fun build(): ClientInterface {
         val retrofit = Retrofit.Builder()
@@ -39,4 +40,15 @@ object ApiClient {
         serviceRequestInterface = retrofit.create(ServiceRequestInterface::class.java)
         return serviceRequestInterface as ServiceRequestInterface
     }
+
+    fun buildSpeciality(): SpecialityInterface {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        specialityInterface = retrofit.create(SpecialityInterface::class.java)
+        return specialityInterface as SpecialityInterface
+    }
+
 }

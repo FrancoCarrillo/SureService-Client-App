@@ -22,7 +22,6 @@ import vitec.sureservice.ui.service.Valoration
 @Composable
 fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel, goToBookAnAppointment: (Int) -> Unit)
 {
-    serviceViewModel.getATechnicianById(technicianId)
     val technician: Technician by serviceViewModel.technician.observeAsState(Technician())
 
     Column(

@@ -18,6 +18,7 @@ import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
 import vitec.sureservice.ui.service.ServiceViewModel
+import vitec.sureservice.ui.service.SpecialityViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
@@ -144,7 +145,9 @@ fun NavGraphBuilder.addService(navController: NavHostController) {
         arguments = Destinations.Service.arguments
     ){
         val serviceViewModel: ServiceViewModel = hiltViewModel()
-        Service(serviceViewModel){
+        val specialityViewModel: SpecialityViewModel = hiltViewModel()
+        specialityViewModel.getAllSpecialities()
+        Service(serviceViewModel, specialityViewModel){
             navController.navigate(
                 Destinations.TechnicianProfile.createRoute(it)
             )
@@ -177,9 +180,10 @@ fun NavGraphBuilder.addTechnicianProfile(navController: NavHostController) {
     composable(
         route = Destinations.TechnicianProfile.route
     ){ navBackStackEntry ->
-        val technicianId = navBackStackEntry.arguments?.getString("technicianId")
+        val technicianId = navBackStackEntry.arguments?.getString("technicianId")!!.toInt()
         val serviceViewModel: ServiceViewModel = hiltViewModel()
-        TechnicianProfile(Integer.parseInt(technicianId!!), serviceViewModel)
+        serviceViewModel.getATechnicianById(technicianId)
+        TechnicianProfile(technicianId, serviceViewModel)
         {
             navController.navigate(
                 Destinations.BookAnAppointment.createRoute(it)
