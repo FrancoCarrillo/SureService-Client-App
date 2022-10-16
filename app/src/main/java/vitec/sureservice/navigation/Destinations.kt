@@ -16,6 +16,21 @@ sealed class Destinations(
     object Service: Destinations("service", emptyList())
     object Reservation: Destinations("reservation", emptyList())
     object Settings: Destinations("settings", emptyList())
+    object Logout: Destinations("logout", emptyList())
+    object TechnicianProfile: Destinations("technicianProfile/{technicianId}", emptyList()){
+        fun createRoute(technicianId: Int) = "technicianProfile/$technicianId"
+    }
+    object BookAnAppointment: Destinations("bookAnAppointment/{technicianId}", emptyList()){
+        fun createRoute(technicianId: Int) = "bookAnAppointment/$technicianId"
+    }
+    object DetailBookAnAppointment: Destinations("detailBookAnAppointment/{date}/{technicianName}/{technicianLastName}/{technicianDistrict}/{serviceRequestId}", emptyList()){
+        fun createRoute(date: String,
+                        technicianName: String,
+                        technicianLastName: String,
+                        technicianDistrict: String,
+                        serviceRequestId: Int) = "detailBookAnAppointment/$date/$technicianName/$technicianLastName/$technicianDistrict/$serviceRequestId"
+    }
+    
     object SettingChangeInformation: Destinations("settings_change_information", emptyList())
 
 }

@@ -7,6 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import vitec.sureservice.data.model.Client
+import vitec.sureservice.data.model.Technician
 import vitec.sureservice.ui.login.LoginDto
 import vitec.sureservice.ui.settings.SettingsDto
 import vitec.sureservice.ui.signup.SignupDto

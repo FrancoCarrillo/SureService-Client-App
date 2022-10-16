@@ -12,14 +12,20 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import vitec.sureservice.navigation.setting.SettingNavigation
 import vitec.sureservice.ui.MainScreen
+import vitec.sureservice.ui.bookAnAppointment.BookAnAppointment
+import vitec.sureservice.ui.bookAnAppointment.DetailBookAnAppointment
+import vitec.sureservice.ui.bookAnAppointment.ServiceRequestViewModel
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
+import vitec.sureservice.ui.service.ServiceViewModel
+import vitec.sureservice.ui.service.SpecialityViewModel
 import vitec.sureservice.ui.settings.SettingViewModel
 import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
+import vitec.sureservice.ui.technicianProfile.TechnicianProfile
 
 
 @ExperimentalAnimationApi
@@ -34,9 +40,12 @@ fun Navigation(navControllerFather: NavHostController, startDestination: String,
             addLogin(navController)
             addSignUp(navController)
             addHome(navControllerFather)
-            addService()
+            addService(navController)
             addReservation()
             addSettings(navControllerFather)
+            addTechnicianProfile(navController)
+            addBookAnAppointment(navController)
+            addDetailBookAnAppointment()
         }
     }
 }
@@ -125,12 +134,19 @@ fun NavGraphBuilder.addHome(navControllerFather: NavHostController) {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addService() {
+fun NavGraphBuilder.addService(navController: NavHostController) {
     composable(
         route = Destinations.Service.route,
         arguments = Destinations.Service.arguments
     ){
-        Service()
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        val specialityViewModel: SpecialityViewModel = hiltViewModel()
+        specialityViewModel.getAllSpecialities()
+        Service(serviceViewModel, specialityViewModel){
+            navController.navigate(
+                Destinations.TechnicianProfile.createRoute(it)
+            )
+        }
     }
 }
 
@@ -152,5 +168,48 @@ fun NavGraphBuilder.addSettings(navControllerFather: NavHostController) {
     ){
         val navController = rememberAnimatedNavController()
         SettingNavigation(navControllerFather = navControllerFather, navController = navController)
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addTechnicianProfile(navController: NavHostController) {
+    composable(
+        route = Destinations.TechnicianProfile.route
+    ){ navBackStackEntry ->
+        val technicianId = navBackStackEntry.arguments?.getString("technicianId")!!.toInt()
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        serviceViewModel.getATechnicianById(technicianId)
+        TechnicianProfile(technicianId, serviceViewModel)
+        {
+            navController.navigate(
+                Destinations.BookAnAppointment.createRoute(it)
+            )
+        }
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addBookAnAppointment(navController: NavHostController){
+    composable(
+        route = Destinations.BookAnAppointment.route
+    ){ navBackStackEntry ->
+        val technicianId = navBackStackEntry.arguments?.getString("technicianId")
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        val serviceRequestViewModel: ServiceRequestViewModel = hiltViewModel()
+        BookAnAppointment(Integer.parseInt(technicianId!!), serviceViewModel, serviceRequestViewModel, navController)
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addDetailBookAnAppointment(){
+    composable(
+        route = Destinations.DetailBookAnAppointment.route
+    ){ navBackStackEntry ->
+        val date = navBackStackEntry.arguments?.getString("date")
+        val technicianName = navBackStackEntry.arguments?.getString("technicianName")
+        val technicianLastName = navBackStackEntry.arguments?.getString("technicianLastName")
+        val technicianDistrict = navBackStackEntry.arguments?.getString("technicianDistrict")
+        val serviceRequestId = navBackStackEntry.arguments?.getString("serviceRequestId")
+        DetailBookAnAppointment(date!!, technicianName!!, technicianLastName!!, technicianDistrict!!, serviceRequestId!!)
     }
 }
