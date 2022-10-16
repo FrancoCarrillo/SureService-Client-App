@@ -20,7 +20,7 @@ import vitec.sureservice.ui.service.ServiceViewModel
 import vitec.sureservice.ui.service.Valoration
 
 @Composable
-fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel)
+fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel, goToBookAnAppointment: (Int) -> Unit)
 {
     serviceViewModel.getATechnicianById(technicianId)
     val technician: Technician by serviceViewModel.technician.observeAsState(Technician())
@@ -56,7 +56,7 @@ fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel)
             }
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { goToBookAnAppointment(technicianId) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "BOOK APPOINTMENT")
