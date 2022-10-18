@@ -104,7 +104,6 @@ fun Reservation(Logout: ()-> Unit, requestAccept: ()-> Unit) {
                 }
 
 
-
             }
 
         }

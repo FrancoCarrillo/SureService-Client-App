@@ -26,8 +26,6 @@ fun Payment(paymentSuccess: ()-> Unit) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
 
-    val btnEnabled = cardNumber.isNotEmpty() && month.isNotEmpty() && year.isNotEmpty() && securityCode.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()
-
 
     Column(modifier = Modifier
         .fillMaxSize()
