@@ -29,6 +29,7 @@ fun RequestAccept(payment: ()-> Unit) {
         .fillMaxSize()
         .padding(25.dp)) {
 
+
         Text(
             text = "Alan Perez",
             style = TextStyle(color = Color.Black, fontSize = 34.sp, fontWeight = FontWeight.Bold)
