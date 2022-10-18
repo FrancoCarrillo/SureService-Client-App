@@ -128,7 +128,7 @@ fun Payment(paymentSuccess: ()-> Unit) {
             .height(20.dp))
 
         Button(
-            onClick = { paymentSuccess() },
+            onClick = { paymentSuccess() /* Payment Route */ },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),
