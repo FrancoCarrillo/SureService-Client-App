@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import vitec.sureservice.navigation.reservation.ReservationNavigation
 import vitec.sureservice.navigation.setting.SettingNavigation
 import vitec.sureservice.ui.MainScreen
 import vitec.sureservice.ui.bookAnAppointment.BookAnAppointment
@@ -17,12 +18,9 @@ import vitec.sureservice.ui.bookAnAppointment.DetailBookAnAppointment
 import vitec.sureservice.ui.bookAnAppointment.ServiceRequestViewModel
 import vitec.sureservice.ui.login.LogIn
 import vitec.sureservice.ui.login.LogInViewModel
-import vitec.sureservice.ui.reservation.Reservation
 import vitec.sureservice.ui.service.Service
 import vitec.sureservice.ui.service.ServiceViewModel
 import vitec.sureservice.ui.service.SpecialityViewModel
-import vitec.sureservice.ui.settings.SettingViewModel
-import vitec.sureservice.ui.settings.Settings
 import vitec.sureservice.ui.signup.SignUp
 import vitec.sureservice.ui.signup.SignUpViewModel
 import vitec.sureservice.ui.technicianProfile.TechnicianProfile
@@ -41,7 +39,7 @@ fun Navigation(navControllerFather: NavHostController, startDestination: String,
             addSignUp(navController)
             addHome(navControllerFather)
             addService(navController)
-            addReservation()
+            addReservation(navControllerFather)
             addSettings(navControllerFather)
             addTechnicianProfile(navController)
             addBookAnAppointment(navController)
@@ -151,12 +149,13 @@ fun NavGraphBuilder.addService(navController: NavHostController) {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addReservation() {
+fun NavGraphBuilder.addReservation(navControllerFather: NavHostController) {
     composable(
         route = Destinations.Reservation.route,
         arguments = Destinations.Reservation.arguments
     ){
-        Reservation()
+        val navController = rememberAnimatedNavController()
+        ReservationNavigation(navControllerFather = navControllerFather, navController = navController)
     }
 }
 

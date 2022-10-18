@@ -56,9 +56,7 @@ fun NavGraphBuilder.addSettings(
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.addSettingChangeInformation(
-    navController: NavHostController
-){
+fun NavGraphBuilder.addSettingChangeInformation(navController: NavHostController){
     composable(
         route = Destinations.SettingChangeInformation.route,
     ){
@@ -72,4 +70,3 @@ fun NavGraphBuilder.addSettingChangeInformation(
         )
     }
 }
-

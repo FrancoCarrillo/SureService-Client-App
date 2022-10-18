@@ -14,9 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @Composable
-fun Payment() {
+fun Payment(paymentSuccess: ()-> Unit) {
 
     var cardNumber by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
@@ -24,6 +25,8 @@ fun Payment() {
     var securityCode by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
+
+    val btnEnabled = cardNumber.isNotEmpty() && month.isNotEmpty() && year.isNotEmpty() && securityCode.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()
 
 
     Column(modifier = Modifier
@@ -127,7 +130,7 @@ fun Payment() {
             .height(20.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { paymentSuccess() },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

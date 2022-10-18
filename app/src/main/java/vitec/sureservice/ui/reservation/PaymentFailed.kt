@@ -16,10 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import vitec.sureservice.R
 
 @Composable
-fun PaymentFailed() {
+fun PaymentFailed(reservation: ()-> Unit) {
 
     Column(
         modifier = Modifier
@@ -72,7 +73,7 @@ fun PaymentFailed() {
 
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { reservation()},
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

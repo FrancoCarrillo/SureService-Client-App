@@ -1,15 +1,14 @@
 package vitec.sureservice.ui.reservation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -17,12 +16,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import vitec.sureservice.R
 
 var  colorSureService2 = 0xFF0332FC
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun RequestAccept() {
+fun RequestAccept(payment: ()-> Unit) {
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -115,7 +116,7 @@ fun RequestAccept() {
             .height(30.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { payment() },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

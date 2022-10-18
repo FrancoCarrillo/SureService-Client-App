@@ -4,7 +4,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -16,12 +15,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.TextFieldValue
 
 var  colorSureService1 = 0xFF0332FC
 
 @Composable
-fun Reservation() {
+fun Reservation(Logout: ()-> Unit, requestAccept: ()-> Unit) {
 
     var search by remember { mutableStateOf("") }
 
@@ -97,7 +95,7 @@ fun Reservation() {
                 Row() {
 
                     Spacer(modifier = Modifier.width(5.dp))
-                    TextButton(onClick = { /* Do something! */ }) {
+                    TextButton(onClick = { requestAccept() }) {
                         Text(
                             text = "MORE INFO",
                             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color(colorSureService1)
