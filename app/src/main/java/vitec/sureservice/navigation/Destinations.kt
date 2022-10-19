@@ -33,4 +33,9 @@ sealed class Destinations(
     
     object SettingChangeInformation: Destinations("settings_change_information", emptyList())
 
+    object RequestAccept: Destinations ("requestAccept", emptyList())
+    object Payment: Destinations ("payment", emptyList())
+    object PaymentSuccess: Destinations ("paymentSuccess", emptyList())
+    object PaymentFailed: Destinations ("paymentFailed", emptyList())
+
 }
