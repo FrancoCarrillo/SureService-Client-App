@@ -1,6 +1,8 @@
 package vitec.sureservice.ui.service
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,29 +49,44 @@ class ServiceViewModel: ViewModel() {
             try {
                 val getAllTechniciansBySpeciality = technicianInterface?.getTechniciansBySpeciality(specialityId)
                 getAllTechniciansBySpeciality?.enqueue(object: Callback<List<Technician>> {
+                    @RequiresApi(Build.VERSION_CODES.N)
                     override fun onResponse(
                         call: Call<List<Technician>>,
                         response: Response<List<Technician>>
                     )
                     {
                         var auxResponse: MutableList<Technician> = mutableListOf()
+                        //var aux: MutableList<Technician> = mutableListOf()
                         auxResponse.addAll(response.body()!!)
 
                         if (district != ""){
+                            /*
                             auxResponse.forEach {
                                     technician ->
-                                if (!technician.district.contains(district)){
-                                    auxResponse.remove(technician)
+                                if (technician.district.contains(district)){
+                                    aux.add(technician)
                                 }
-                            }
+                            }*/
+
+                            auxResponse.removeIf { tech -> !tech.district.contains(district) }
+                            //auxResponse = aux
+                            //aux = mutableListOf()
+
                         }
+
+
                         if (rating != "") {
+                            /*
                             auxResponse.forEach {
                                 technician ->
-                                if (technician.valoration != rating.toInt()){
-                                    auxResponse.remove(technician)
+                                if (technician.valoration == rating.toInt()){
+                                    aux.add(technician)
                                 }
-                            }
+                            }*/
+                            auxResponse.removeIf { tech -> tech.valoration != rating.toInt() }
+                            //auxResponse = aux
+                            //aux = mutableListOf()
+
                         }
                         technicians.postValue(auxResponse)
                     }
