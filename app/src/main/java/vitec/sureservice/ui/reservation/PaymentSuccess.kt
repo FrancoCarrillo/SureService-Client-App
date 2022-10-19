@@ -22,6 +22,9 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
     var review by remember { mutableStateOf("") }
     var calification by remember { mutableStateOf("") }
 
+    val btnEnabled = calification.isNotEmpty()
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -87,6 +90,7 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),
+            enabled = btnEnabled
         ) {
             Text(text = "SEND",
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
