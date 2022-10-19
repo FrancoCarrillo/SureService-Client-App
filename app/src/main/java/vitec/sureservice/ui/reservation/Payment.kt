@@ -26,6 +26,8 @@ fun Payment(paymentSuccess: ()-> Unit) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
 
+    val btnEnabled = cardNumber.isNotEmpty() && month.isNotEmpty() && year.isNotEmpty() && securityCode.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()
+
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -132,6 +134,7 @@ fun Payment(paymentSuccess: ()-> Unit) {
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),
+            enabled = btnEnabled
         ) {
             Text(text = "PAY",
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
