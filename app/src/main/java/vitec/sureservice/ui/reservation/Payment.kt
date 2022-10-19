@@ -1,6 +1,7 @@
 package vitec.sureservice.ui.reservation
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -40,11 +42,14 @@ fun Payment(paymentSuccess: ()-> Unit) {
             .fillMaxWidth()
             .height(10.dp))
 
-        OutlinedTextField(value = cardNumber, onValueChange = {cardNumber = it},
+        OutlinedTextField(
+            value = cardNumber,
+            onValueChange = { if (it.length < 17) cardNumber = it },
             modifier = Modifier
                 .fillMaxWidth(),
             singleLine = true,
-            label = {Text(text = "Card Number")}
+            label = { Text(text = "Card Number") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
         Spacer(modifier = Modifier
@@ -54,9 +59,10 @@ fun Payment(paymentSuccess: ()-> Unit) {
 
         Row() {
 
-            Column(        modifier = Modifier
-                .height(70.dp),
-                verticalArrangement = Arrangement.SpaceAround) {
+            Column(
+                modifier = Modifier
+                    .height(70.dp), verticalArrangement = Arrangement.SpaceAround
+            ) {
                 Text(
                     text = "Expirity",
                     style = TextStyle(color = Color.Black, fontSize = 30.sp, fontWeight = FontWeight.Bold),
@@ -66,21 +72,27 @@ fun Payment(paymentSuccess: ()-> Unit) {
             Spacer(modifier = Modifier
                 .width(15.dp))
 
-            OutlinedTextField(value = month, onValueChange = {month = it},
+            OutlinedTextField(
+                value = month,
+                onValueChange = { if (it.length < 3) month = it },
                 modifier = Modifier
                     .width(115.dp),
                 singleLine = true,
-                label = {Text(text = "MM")}
+                label = { Text(text = "MM") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Spacer(modifier = Modifier
                 .width(15.dp))
 
-            OutlinedTextField(value = year, onValueChange = {year = it},
+            OutlinedTextField(
+                value = year,
+                onValueChange = { if (it.length < 3) year = it },
                 modifier = Modifier
                     .width(115.dp),
                 singleLine = true,
-                label = {Text(text = "YY")}
+                label = { Text(text = "YY") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
 
@@ -91,11 +103,14 @@ fun Payment(paymentSuccess: ()-> Unit) {
 
 
 
-        OutlinedTextField(value = securityCode, onValueChange = {securityCode = it},
+        OutlinedTextField(
+            value = securityCode,
+            onValueChange = { if (it.length < 4) securityCode = it },
             modifier = Modifier
                 .fillMaxWidth(),
             singleLine = true,
-            label = {Text(text = "Security Code")}
+            label = { Text(text = "Security Code") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
         Spacer(modifier = Modifier

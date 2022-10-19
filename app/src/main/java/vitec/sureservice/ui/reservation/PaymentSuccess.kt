@@ -2,6 +2,7 @@ package vitec.sureservice.ui.reservation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -63,11 +65,13 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
             .fillMaxWidth()
             .height(5.dp))
 
-        OutlinedTextField(value = calification, onValueChange = {calification = it},
+        OutlinedTextField(value = calification,
+            onValueChange = { if (it.length < 3 ) calification = it },
             modifier = Modifier
                 .width(100.dp),
             singleLine = true,
-            label = {Text(text = "Calification")}
+            label = { Text(text = "Calification") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
         Spacer(modifier = Modifier
