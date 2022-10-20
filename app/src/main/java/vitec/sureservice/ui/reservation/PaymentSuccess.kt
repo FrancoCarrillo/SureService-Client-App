@@ -2,7 +2,9 @@ package vitec.sureservice.ui.reservation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,7 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import vitec.sureservice.R
 
 
@@ -30,7 +31,8 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(25.dp),
+            .padding(25.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

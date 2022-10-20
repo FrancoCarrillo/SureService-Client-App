@@ -11,7 +11,9 @@ import androidx.compose.ui.unit.sp
 import vitec.sureservice.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
@@ -26,7 +28,8 @@ fun Reservation(Logout: ()-> Unit, requestAccept: ()-> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         Spacer(modifier = Modifier

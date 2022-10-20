@@ -1,7 +1,9 @@
 package vitec.sureservice.ui.reservation
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
@@ -31,7 +33,8 @@ fun Payment(paymentSuccess: ()-> Unit) {
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(25.dp))  {
+        .padding(25.dp)
+        .verticalScroll(rememberScrollState()))  {
 
         Text(
             text = "Add Credit/Debid Card",
