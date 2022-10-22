@@ -33,7 +33,7 @@ fun RequestAccept(payment: ()-> Unit) {
 
 
         Text(
-            text = "Alan Perez",
+            text = "Alonso Perez",
             style = TextStyle(color = Color.Black, fontSize = 34.sp, fontWeight = FontWeight.Bold)
         )
 
@@ -115,7 +115,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "10 soles",
+                text = "100 soles",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }

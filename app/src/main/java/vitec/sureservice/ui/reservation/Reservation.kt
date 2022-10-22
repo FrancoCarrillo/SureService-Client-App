@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 var  colorSureService1 = 0xFF0332FC
 
 @Composable
-fun Reservation(requestAccept: ()-> Unit) {
+fun Reservation(login: () -> Unit, requestAccept: ()-> Unit) {
 
     val btnEnabled = false
 
@@ -39,8 +39,8 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Image(
-                        painter = painterResource(id = R.drawable.technician_profile),
-                        contentDescription = "Image Technician Profile",
+                        painter = painterResource(id = R.drawable.technician_profile1),
+                        contentDescription = "Image Technician Profile 1",
                         modifier = Modifier
                             .height(60.dp)
                             .width(60.dp)
@@ -51,7 +51,7 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                     Column {
                         Text(
-                            text = "Alan Perez",
+                            text = "Alonso Perez",
                             style = TextStyle(color = Color.Black, fontSize = 30.sp, fontWeight = FontWeight.Bold)
                         )
 
@@ -107,8 +107,8 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Image(
-                        painter = painterResource(id = R.drawable.technician_profile),
-                        contentDescription = "Image Technician Profile",
+                        painter = painterResource(id = R.drawable.technician_profile2),
+                        contentDescription = "Image Technician Profile 2",
                         modifier = Modifier
                             .height(60.dp)
                             .width(60.dp)
@@ -119,7 +119,7 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                     Column {
                         Text(
-                            text = "Edgar Poe",
+                            text = "Yolanda Poe",
                             style = TextStyle(color = Color.Black, fontSize = 30.sp, fontWeight = FontWeight.Bold)
                         )
 
@@ -173,8 +173,8 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Image(
-                        painter = painterResource(id = R.drawable.technician_profile),
-                        contentDescription = "Image Technician Profile",
+                        painter = painterResource(id = R.drawable.technician_profile3),
+                        contentDescription = "Image Technician Profile 3",
                         modifier = Modifier
                             .height(60.dp)
                             .width(60.dp)
@@ -185,7 +185,7 @@ fun Reservation(requestAccept: ()-> Unit) {
 
                     Column {
                         Text(
-                            text = "Pablo Escobar",
+                            text = "Tanya Escobar",
                             style = TextStyle(color = Color.Black, fontSize = 30.sp, fontWeight = FontWeight.Bold)
                         )
 
