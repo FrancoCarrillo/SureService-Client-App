@@ -33,7 +33,8 @@ fun PaymentFailed(reservation: ()-> Unit) {
 
         Text(
             text = "Ups, an error ocurred",
-            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold)
+            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center
         )
 
 
@@ -83,6 +84,9 @@ fun PaymentFailed(reservation: ()-> Unit) {
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
         }
 
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp))
 
     }
 

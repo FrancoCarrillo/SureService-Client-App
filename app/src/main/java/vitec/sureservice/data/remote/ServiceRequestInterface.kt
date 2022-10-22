@@ -2,6 +2,7 @@ package vitec.sureservice.data.remote
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import vitec.sureservice.data.model.ServiceRequest
@@ -11,5 +12,9 @@ interface ServiceRequestInterface {
 
     @POST("services/{clientId}/{technicianId}")
     fun postServiceRequest(@Path("clientId") clientId: Int, @Path("technicianId") technicianId: Int, @Body serviceRequestDto: ServiceRequestDto): Call<ServiceRequest>
+
+    @GET("sesrvice/client/{clientId}")
+    fun getServiceRequestById(@Path("clientId") clientId: Int): Call<ServiceRequest>
+
 
 }

@@ -3,27 +3,33 @@ package vitec.sureservice.ui.reservation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import vitec.sureservice.R
 
-
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PaymentSuccess(paymentFailed: ()-> Unit) {
 
     var review by remember { mutableStateOf("") }
     var calification by remember { mutableStateOf("") }
+
+    val listItems = arrayOf("1","2","3","4","5")
+    var expanded by remember { mutableStateOf(false) }
+    var textFiledSize by remember {mutableStateOf(Size.Zero)}
 
     val btnEnabled = calification.isNotEmpty()
 
@@ -39,7 +45,8 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
 
         Text(
             text = "Successfully Paid",
-            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold)
+            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier
@@ -59,22 +66,46 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
             .height(20.dp))
 
         Text(
-            text = "Rate from 1 to 10 to: Alan Perez",
-            style = TextStyle(color = Color.Black, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            text = "Rate from 1 to 5",
+            style = TextStyle(color = Color.Black, fontSize = 26.sp, fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
             .height(5.dp))
 
-        OutlinedTextField(value = calification,
-            onValueChange = { if (it.length < 3 ) calification = it },
-            modifier = Modifier
-                .width(100.dp),
-            singleLine = true,
-            label = { Text(text = "Calification") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
+        /*DropDownMenu*/
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {// text field
+            OutlinedTextField(
+                value = calification,
+                onValueChange = {calification = it},
+                readOnly = true,
+                label = { Text(text = "MM") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
+                modifier = Modifier.width(120.dp).onGloballyPositioned { coordinates -> textFiledSize = coordinates.size.toSize() },
+            )
+            // menu
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) { listItems.forEach { selectedOption ->
+                // menu item
+                DropdownMenuItem(onClick = {
+                    calification = selectedOption
+                    expanded = false
+                }) {
+                    Text(text = selectedOption)
+                }
+            }
+            }
+        }
+        /*DropDownMenu*/
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
@@ -102,6 +133,10 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
         }
 
+
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp))
     }
 
 }
