@@ -5,7 +5,9 @@ class ServiceRequest (
     val detail: String,
     val total_price: Double,
     val reservation_price: Double,
-    val confirmation: Int
+    val confirmation: Int,
+    val technician: Technician,
     ) {
-    constructor(): this(0, "", 0.0, 0.0, 0)
+    constructor(): this(0, "", 0.0, 0.0, 0, technician = Technician())
+
 }

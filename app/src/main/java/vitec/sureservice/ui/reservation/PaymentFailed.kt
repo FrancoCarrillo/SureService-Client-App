@@ -2,6 +2,8 @@ package vitec.sureservice.ui.reservation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -23,14 +25,16 @@ fun PaymentFailed(reservation: ()-> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(25.dp),
+            .padding(25.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
 
         Text(
             text = "Ups, an error ocurred",
-            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold)
+            style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center
         )
 
 
@@ -80,6 +84,9 @@ fun PaymentFailed(reservation: ()-> Unit) {
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
         }
 
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp))
 
     }
 
