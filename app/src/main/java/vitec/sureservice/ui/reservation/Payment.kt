@@ -1,21 +1,26 @@
 package vitec.sureservice.ui.reservation
 
+
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Payment(paymentSuccess: ()-> Unit) {
 
@@ -26,16 +31,22 @@ fun Payment(paymentSuccess: ()-> Unit) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
 
+    val listItems = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
+    var expanded by remember { mutableStateOf(false) }
+    var textFiledSize by remember {mutableStateOf(Size.Zero)}
+
     val btnEnabled = cardNumber.isNotEmpty() && month.isNotEmpty() && year.isNotEmpty() && securityCode.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()
 
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(25.dp))  {
+        .padding(25.dp)
+        .verticalScroll(rememberScrollState()))  {
 
         Text(
             text = "Add Credit/Debid Card",
-            style = TextStyle(color = Color.Black, fontSize = 38.sp, fontWeight = FontWeight.Bold)
+            style = TextStyle(color = Color.Black, fontSize = 38.sp, fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier
@@ -72,15 +83,39 @@ fun Payment(paymentSuccess: ()-> Unit) {
             Spacer(modifier = Modifier
                 .width(15.dp))
 
-            OutlinedTextField(
-                value = month,
-                onValueChange = { if (it.length < 3) month = it },
-                modifier = Modifier
-                    .width(115.dp),
-                singleLine = true,
-                label = { Text(text = "MM") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+
+            /*DropDownMenu*/
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = {
+                    expanded = !expanded
+                }
+            ) {// text field
+                OutlinedTextField(
+                    value = month,
+                    onValueChange = {month = it},
+                    readOnly = true,
+                    label = { Text(text = "MM") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
+                    modifier = Modifier.width(115.dp).onGloballyPositioned { coordinates -> textFiledSize = coordinates.size.toSize() },
+                )
+                // menu
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) { listItems.forEach { selectedOption ->
+                        // menu item
+                        DropdownMenuItem(onClick = {
+                            month = selectedOption
+                            expanded = false
+                        }) {
+                            Text(text = selectedOption)
+                        }
+                    }
+                }
+            }
+            /*DropDownMenu*/
+
 
             Spacer(modifier = Modifier
                 .width(15.dp))
@@ -153,8 +188,7 @@ fun Payment(paymentSuccess: ()-> Unit) {
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
         }
 
-
-        
     }
+
 
 }

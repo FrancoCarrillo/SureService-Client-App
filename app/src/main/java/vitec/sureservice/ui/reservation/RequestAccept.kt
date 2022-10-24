@@ -3,6 +3,8 @@ package vitec.sureservice.ui.reservation
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -13,10 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import vitec.sureservice.R
 
 var  colorSureService2 = 0xFF0332FC
@@ -27,11 +28,12 @@ fun RequestAccept(payment: ()-> Unit) {
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(25.dp)) {
+        .padding(25.dp)
+        .verticalScroll(rememberScrollState())) {
 
 
         Text(
-            text = "Alan Perez",
+            text = "Alonso Perez",
             style = TextStyle(color = Color.Black, fontSize = 34.sp, fontWeight = FontWeight.Bold)
         )
 
@@ -54,36 +56,70 @@ fun RequestAccept(payment: ()-> Unit) {
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
-            .height(10.dp))
+            .height(5.dp))
 
 
-        Column() {
+        Row() {
             Text(
                 text = "Location: ",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             )
 
             Text(
-                text = "Surco, Perú",
+                text = "Surco",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
+            )
+        }
+
+
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(5.dp))
+
+        Row() {
+            Text(
+                text = "Detail: ",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            )
+
+            Text(
+                text = "Se rompió la pantalla de mi celular",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
-            .height(10.dp))
+            .height(5.dp))
 
-        Column() {
+        Row() {
             Text(
-                text = "Message: ",
+                text = "Reservation Price: ",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             )
 
             Text(
-                text = "Hi! Pedro, Im glad to help you. I am going to visited at the selected date.",
-                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                text = "50 soles",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
+
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(5.dp))
+
+        Row() {
+            Text(
+                text = "Total Price: ",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            )
+
+            Text(
+                text = "100 soles",
+                style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
+            )
+        }
+
 
         Spacer(modifier = Modifier
             .fillMaxWidth()
@@ -103,11 +139,12 @@ fun RequestAccept(payment: ()-> Unit) {
 
             Text(
                 text = "Ask the technician this ID when approaching your home",
-                style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Medium),
+                textAlign = TextAlign.Center
             )
 
             Text(
-                text = "12223",
+                text = "1",
                 style = TextStyle(color = Color.Black, fontSize = 32.sp, fontWeight = FontWeight.Bold)
             )
         }
@@ -125,5 +162,11 @@ fun RequestAccept(payment: ()-> Unit) {
             Text(text = "PAY",
                 style = TextStyle(color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Medium))
         }
+
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp))
+
+
     }
 }

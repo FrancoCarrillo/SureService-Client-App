@@ -55,6 +55,7 @@ fun Service(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Spinner(specialities)
+
         OutlinedTextField(value = place, onValueChange = {place = it},
             modifier = Modifier
                 .fillMaxWidth(),
@@ -104,6 +105,8 @@ fun Spinner (items: List<Speciality>) {
                 Text(text = specialityText, fontSize = 16.sp, modifier = Modifier.padding(end = 8.dp))
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
             }
+
+
             DropdownMenu(
                 modifier = Modifier.fillMaxWidth(),
                 expanded = expanded,
