@@ -140,6 +140,7 @@ fun NavGraphBuilder.addService(navController: NavHostController) {
         val serviceViewModel: ServiceViewModel = hiltViewModel()
         val specialityViewModel: SpecialityViewModel = hiltViewModel()
         specialityViewModel.getAllSpecialities()
+
         Service(serviceViewModel, specialityViewModel){
             navController.navigate(
                 Destinations.TechnicianProfile.createRoute(it)
@@ -178,6 +179,7 @@ fun NavGraphBuilder.addTechnicianProfile(navController: NavHostController) {
         val technicianId = navBackStackEntry.arguments?.getString("technicianId")!!.toInt()
         val serviceViewModel: ServiceViewModel = hiltViewModel()
         serviceViewModel.getATechnicianById(technicianId)
+
         TechnicianProfile(technicianId, serviceViewModel)
         {
             navController.navigate(

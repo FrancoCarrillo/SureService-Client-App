@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import vitec.sureservice.navigation.Destinations
-import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.reservation.*
 
 @ExperimentalAnimationApi
@@ -41,20 +40,11 @@ fun NavGraphBuilder.addReservation(
     composable(
         route = Destinations.Reservation.route
     ){
-        val loginViewModel: LogInViewModel = hiltViewModel()
+        val reservationViewModel: ReservationViewModel = hiltViewModel()
+        reservationViewModel.getServiceRequestsByClientId()
 
-        Reservation(
-            {
-                loginViewModel.clientDao.deleteClient(loginViewModel.client)
-                navControllerFather.navigate(Destinations.Login.route){
-                    popUpTo(Destinations.Home.route){
-                        inclusive = true
-                    }
-                }
-            },
-            {
-                navController.navigate(Destinations.RequestAccept.route)
-            } )
+        Reservation(reservationViewModel)
+            { navController.navigate(Destinations.RequestAccept.route)}
     }
 }
 
