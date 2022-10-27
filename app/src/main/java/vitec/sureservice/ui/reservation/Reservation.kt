@@ -19,6 +19,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.clip
+import org.w3c.dom.Text
 import vitec.sureservice.data.model.ServiceRequest
 
 var  colorSureService1 = 0xFF0332FC
@@ -30,14 +31,17 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
     val serviceRequests: List<ServiceRequest> by reservationViewModel.serviceRequests.observeAsState(listOf())
 
         LazyColumn (modifier = Modifier
-            .fillMaxSize().fillMaxHeight()
+            .fillMaxSize()
+            .fillMaxHeight()
             .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(serviceRequests) { serviceRequest ->
                 CardTechnicianService(serviceRequest, requestAccept)
             }
         }
-
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(50.dp))
 }
 
 
@@ -76,14 +80,28 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                 .fillMaxWidth()
                 .height(15.dp))
 
+            Row() {
+                Text(
+                    text = "ID: ",
+                    style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                )
+
+                Text(
+                    text = "${serviceRequest.id}",
+                    style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                )
+
+            }
+
+
 
             Row() {
                 Text(
                     text = "DETAIL: ${serviceRequest.detail}",
                     style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                 )
-
             }
+
 
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -92,30 +110,12 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
 
             if (serviceRequest.confirmation == 0) {
                     Text(text = "WAITING",
-                        style = TextStyle( color = Color.Gray, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        )
-
-                val btnEnabled = true
-
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    TextButton(onClick = { requestAccept(serviceRequest.id) }, enabled = btnEnabled) {
-                        Text(
-                            text = "MORE INFO",
-                            style = TextStyle(fontWeight = FontWeight.Medium, color = Color(colorSureService1)
-                            ))
-                    }
-                }
-            }
-
-
-
-
+                        style = TextStyle( color = Color.Gray, fontSize = 16.sp, fontWeight = FontWeight.Bold))}
 
 
             if (serviceRequest.confirmation == 1) {
                 Text(text = "ACCEPT",
-                    style = TextStyle(color = Color(colorSureService1), fontSize = 16.sp, fontWeight = FontWeight.Bold),
-                )
+                    style = TextStyle(color = Color(colorSureService1), fontSize = 16.sp, fontWeight = FontWeight.Bold))
 
                 val btnEnabled = true
 
@@ -130,26 +130,18 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
 
             if (serviceRequest.confirmation == 2) {
                 Text(text = "REJECTED",
-                    style = TextStyle(color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold),
-                )
+                    style = TextStyle(color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold))}
 
-                val btnEnabled = false
-
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    TextButton(onClick = { requestAccept(serviceRequest.id) }, enabled = btnEnabled) {
-                        Text(
-                            text = "MORE INFO",
-                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color(colorSureService1)
-                            ))
-                    }
-                }}
+            if (serviceRequest.confirmation == 3) {
+                Text(text = "PAID OUT",
+                    style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Bold))}
 
         }
     }
 
     Spacer(modifier = Modifier
         .fillMaxWidth()
-        .height(10.dp))
+        .height(5.dp))
 
 }
 
