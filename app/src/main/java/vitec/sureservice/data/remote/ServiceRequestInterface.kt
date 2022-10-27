@@ -13,8 +13,10 @@ interface ServiceRequestInterface {
     @POST("services/{clientId}/{technicianId}")
     fun postServiceRequest(@Path("clientId") clientId: Int, @Path("technicianId") technicianId: Int, @Body serviceRequestDto: ServiceRequestDto): Call<ServiceRequest>
 
-    @GET("sesrvice/client/{clientId}")
-    fun getServiceRequestById(@Path("clientId") clientId: Int): Call<ServiceRequest>
+    @GET("services/client/{clientId}")
+    fun getServiceRequestByClientId(@Path("clientId") clientId: Int): Call<List<ServiceRequest>>
 
+    @GET("services/{serviceRequestId}")
+    fun getServiceRequestById(@Path("serviceRequestId") serviceRequestId: Int): Call<ServiceRequest>
 
 }

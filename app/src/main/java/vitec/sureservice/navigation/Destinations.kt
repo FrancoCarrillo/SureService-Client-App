@@ -1,9 +1,6 @@
 package vitec.sureservice.navigation
 
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavArgs
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 
 sealed class Destinations(
     val route: String,
@@ -33,7 +30,9 @@ sealed class Destinations(
     
     object SettingChangeInformation: Destinations("settings_change_information", emptyList())
 
-    object RequestAccept: Destinations ("requestAccept", emptyList())
+    object RequestAccept: Destinations ("requestAccept/{serviceRequestId}", emptyList()) {
+        fun createRoute(serviceRequestId: Int) = "requestAccept/$serviceRequestId"
+    }
     object Payment: Destinations ("payment", emptyList())
     object PaymentSuccess: Destinations ("paymentSuccess", emptyList())
     object PaymentFailed: Destinations ("paymentFailed", emptyList())
