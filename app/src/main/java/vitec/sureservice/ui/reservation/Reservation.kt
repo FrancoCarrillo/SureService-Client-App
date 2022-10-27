@@ -44,6 +44,9 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
 @Composable
 fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)-> Unit) {
 
+    val day = (1..28).random()
+    val date = "$day-11-2022"
+
     Card(elevation = 5.dp) {
         Column(modifier = Modifier.padding(15.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically){
@@ -56,6 +59,7 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                 )
                 Spacer(modifier = Modifier.width(15.dp))
 
+
                 Column {
                     Text(
                         text = "${serviceRequest.technician.name} ${serviceRequest.technician.last_name}",
@@ -63,7 +67,7 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                     )
 
                     Text(
-                        text = "15-11-2022",
+                        text = date,
                         style = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     )
                 }
@@ -102,6 +106,11 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                     }
                 }
             }
+
+
+
+
+
 
             if (serviceRequest.confirmation == 1) {
                 Text(text = "ACCEPT",

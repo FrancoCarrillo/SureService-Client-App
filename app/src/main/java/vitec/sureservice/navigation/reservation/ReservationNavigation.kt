@@ -44,7 +44,7 @@ fun NavGraphBuilder.addReservation(
         reservationViewModel.getServiceRequestsByClientId()
 
         Reservation(reservationViewModel)
-            { navController.navigate(Destinations.RequestAccept.route)}
+            { navController.navigate(Destinations.RequestAccept.createRoute(it))}
     }
 }
 
@@ -53,15 +53,15 @@ fun NavGraphBuilder.addReservation(
 fun NavGraphBuilder.addRequestAccept(navController: NavHostController){
     composable(
         route = Destinations.RequestAccept.route
-    ){
-        RequestAccept() {
+    ){ navBackStackEntry ->
+        val serviceRequestId = navBackStackEntry.arguments?.getString("serviceRequestId")!!
+        val reservationViewModel: ReservationViewModel = hiltViewModel()
+        reservationViewModel.getServiceRequestById(serviceRequestId.toInt())
+        RequestAccept(reservationViewModel) {
             navController.navigate(Destinations.Payment.route)
         }
     }
 }
-
-
-
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.addPayment(navController: NavHostController){

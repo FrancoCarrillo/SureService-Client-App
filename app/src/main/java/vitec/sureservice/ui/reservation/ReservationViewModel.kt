@@ -45,4 +45,25 @@ class ReservationViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    fun getServiceRequestById(serviceRequestId: Int) {
+        viewModelScope.launch {
+            try {
+                val getServiceRequestById = serviceRequestInterface.getServiceRequestById(serviceRequestId)
+                getServiceRequestById.enqueue(object: Callback<ServiceRequest> {
+                    override fun onResponse(
+                        call: Call<ServiceRequest>,
+                        response: Response<ServiceRequest>
+                    ) { serviceRequest.postValue(response.body()!!) }
+
+                    override fun onFailure(call: Call<ServiceRequest>, t: Throwable) {
+                        Log.d("Fail", t.toString())
+                    }
+                })
+            }
+            catch (e: Exception) {
+                Log.e("Error", e.toString())
+            }
+        }
+    }
+
 }

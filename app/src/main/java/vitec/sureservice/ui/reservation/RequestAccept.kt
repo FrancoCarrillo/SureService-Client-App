@@ -9,6 +9,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,21 +21,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import vitec.sureservice.R
+import vitec.sureservice.data.model.ServiceRequest
 
 var  colorSureService2 = 0xFF0332FC
 
+
+
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun RequestAccept(payment: ()-> Unit) {
+fun RequestAccept(reservationViewModel: ReservationViewModel, payment: ()-> Unit) {
+
+    val serviceRequest: ServiceRequest by reservationViewModel.serviceRequest.observeAsState(
+        ServiceRequest()
+    )
+    val day = (1..28).random()
+    val date = "$day-11-2022"
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(25.dp)
         .verticalScroll(rememberScrollState())) {
 
-
         Text(
-            text = "Alonso Perez",
+            text = "${serviceRequest.technician.name} ${serviceRequest.technician.last_name}",
             style = TextStyle(color = Color.Black, fontSize = 34.sp, fontWeight = FontWeight.Bold)
         )
 
@@ -49,7 +59,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "7/9/2022",
+                text = date,
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
@@ -66,7 +76,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "Surco",
+                text = "${serviceRequest.technician.district}",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
@@ -83,7 +93,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "Se rompió la pantalla de mi celular",
+                text = "${serviceRequest.detail}",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
@@ -99,7 +109,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "50 soles",
+                text = "${serviceRequest.reservation_price} soles",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
@@ -115,7 +125,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "100 soles",
+                text = "${serviceRequest.total_price} soles",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Medium)
             )
         }
@@ -144,7 +154,7 @@ fun RequestAccept(payment: ()-> Unit) {
             )
 
             Text(
-                text = "1",
+                text = "${serviceRequest.id}",
                 style = TextStyle(color = Color.Black, fontSize = 32.sp, fontWeight = FontWeight.Bold)
             )
         }

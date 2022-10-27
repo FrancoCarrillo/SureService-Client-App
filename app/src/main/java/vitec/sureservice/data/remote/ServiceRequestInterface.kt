@@ -16,5 +16,7 @@ interface ServiceRequestInterface {
     @GET("services/client/{clientId}")
     fun getServiceRequestByClientId(@Path("clientId") clientId: Int): Call<List<ServiceRequest>>
 
+    @GET("services/{serviceRequestId}")
+    fun getServiceRequestById(@Path("serviceRequestId") serviceRequestId: Int): Call<ServiceRequest>
 
 }
