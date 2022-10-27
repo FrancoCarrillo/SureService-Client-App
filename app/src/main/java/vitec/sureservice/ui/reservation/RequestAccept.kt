@@ -86,7 +86,7 @@ fun RequestAccept(reservationViewModel: ReservationViewModel, payment: ()-> Unit
             .fillMaxWidth()
             .height(5.dp))
 
-        Row() {
+        Column() {
             Text(
                 text = "Detail: ",
                 style = TextStyle(color = Color.Black, fontSize = 22.sp, fontWeight = FontWeight.Bold)
