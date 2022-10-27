@@ -38,10 +38,9 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
             items(serviceRequests) { serviceRequest ->
                 CardTechnicianService(serviceRequest, requestAccept)
             }
+
         }
-    Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp))
+
 }
 
 
