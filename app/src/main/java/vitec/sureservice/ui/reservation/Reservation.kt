@@ -21,6 +21,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.clip
 import org.w3c.dom.Text
 import vitec.sureservice.data.model.ServiceRequest
+import vitec.sureservice.ui.service.TechnicianCard
 
 var  colorSureService1 = 0xFF0332FC
 
@@ -30,17 +31,20 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
 
     val serviceRequests: List<ServiceRequest> by reservationViewModel.serviceRequests.observeAsState(listOf())
 
-        LazyColumn (modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight()
-            .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally){
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .fillMaxWidth()
+        .padding(horizontal = 15.dp, vertical = 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
+        LazyColumn (){
             items(serviceRequests) { serviceRequest ->
                 CardTechnicianService(serviceRequest, requestAccept)
             }
-
         }
-
+    }
 }
 
 
