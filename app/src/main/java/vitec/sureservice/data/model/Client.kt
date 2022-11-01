@@ -35,4 +35,7 @@ data class Client (
 
     @Ignore
     var rol_id: Long = 1
+
+    @Ignore
+    var roles: Array<String> = emptyArray()
 }

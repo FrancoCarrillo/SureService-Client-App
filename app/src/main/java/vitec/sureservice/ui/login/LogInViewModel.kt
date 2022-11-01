@@ -54,11 +54,18 @@ class LogInViewModel(application: Application): AndroidViewModel(application) {
                     override fun onResponse(call: Call<Client>, response: Response<Client>) {
 
                         if(response.code() == 200) {
-                            isFailure = false
-                            client.id = response.body()!!.id
-                            client.username = response.body()!!.username
-                            insertClient(client)
-                            state.value = state.value.copy(successLogIn = true)
+
+                            if(response.body()?.roles?.get(0) != "ROLE_CLIENT"){
+                                isFailure = true
+                            } else{
+
+                                isFailure = false
+                                client.id = response.body()!!.id
+                                client.username = response.body()!!.username
+                                insertClient(client)
+                                state.value = state.value.copy(successLogIn = true)
+                            }
+
                         }
 
                         if(response.code() == 400) {

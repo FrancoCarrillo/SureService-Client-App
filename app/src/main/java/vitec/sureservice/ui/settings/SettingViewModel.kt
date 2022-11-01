@@ -59,29 +59,71 @@ class SettingViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
+    fun updatePassword(
+        userId: Long,
+        password: String,
+        confirmPassword: String,
+        navController: NavHostController
+    ){
+
+        val updatePasswordDto = UpdatePasswordDto(password, confirmPassword)
+
+
+        val errorMessage = if(updatePasswordDto.confirmPassword.isEmpty() or  updatePasswordDto.newPassword.isEmpty()){
+            R.string.error_missing_information
+        } else if(updatePasswordDto.newPassword != updatePasswordDto.confirmPassword) {
+            R.string.error_incorrectly_repeated_password
+        } else null
+
+        errorMessage?.let {
+            state.value = state.value.copy(errorMessage = errorMessage)
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val updatePassword = settingInterface.updatePassword(userId, updatePasswordDto)
+
+                updatePassword.enqueue(object: Callback<UpdatePasswordDto>{
+                    override fun onResponse(
+                        call: Call<UpdatePasswordDto>,
+                        response: Response<UpdatePasswordDto>
+                    ) {
+                        navController.navigate(Destinations.Settings.route) {
+                            popUpTo(Destinations.Settings.route){
+                                inclusive = true
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UpdatePasswordDto>, t: Throwable) {
+
+                    }
+
+                })
+
+            }catch (_: Exception){
+
+            }
+        }
+
+    }
+
     fun updateClient(
         client: Client,
         email: String,
-        password: String,
         username: String,
         name: String,
         lastName: String,
         telephoneNumber: String,
         dni: String,
-        _confirmPassword: String,
         navController: NavHostController
     ){
-        val settingsDto = SettingsDto(client.username, client.email, client.password, client.name, client.last_name, client.telephone_number, client.dni, 0)
-        var confirmPassword = _confirmPassword
+        val settingsDto = SettingsDto(client.username, client.email, client.name, client.last_name, client.telephone_number, client.dni, 0)
+
 
         if(email.isNotEmpty()){
             settingsDto.email = email
-        }
-        if(password.isNotEmpty()){
-            settingsDto.password = password
-        } else {
-            settingsDto.password = "nosequeponer"
-            confirmPassword = "nosequeponer"
         }
         if(username.isNotEmpty()){
             settingsDto.username = username
@@ -103,9 +145,7 @@ class SettingViewModel(application: Application): AndroidViewModel(application) 
                 R.string.error_not_a_valid_email
         } else if(!Patterns.PHONE.matcher(settingsDto.telephone_number).matches()) {
             R.string.error_not_a_valid_phone_number
-        } else if(settingsDto.password != confirmPassword) {
-            R.string.error_incorrectly_repeated_password
-        } else if(settingsDto.dni.length != 8){
+        }  else if(settingsDto.dni.length != 8){
             R.string.error_incorrectly_dni
         } else null
 
