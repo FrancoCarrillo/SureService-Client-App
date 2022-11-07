@@ -31,12 +31,13 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
 
         LazyColumn (modifier = Modifier
             .fillMaxSize().fillMaxHeight()
-            .padding(16.dp),
+            .padding(16.dp, bottom = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(serviceRequests) { serviceRequest ->
                 CardTechnicianService(serviceRequest, requestAccept)
             }
         }
+
 
 }
 
@@ -92,29 +93,14 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
 
             if (serviceRequest.confirmation == 0) {
                     Text(text = "WAITING",
-                        style = TextStyle( color = Color.Gray, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        style = TextStyle( color = Color.DarkGray, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         )
-
-                val btnEnabled = true
-
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    TextButton(onClick = { requestAccept(serviceRequest.id) }, enabled = btnEnabled) {
-                        Text(
-                            text = "MORE INFO",
-                            style = TextStyle(fontWeight = FontWeight.Medium, color = Color(colorSureService1)
-                            ))
-                    }
-                }
             }
-
-
-
-
 
 
             if (serviceRequest.confirmation == 1) {
                 Text(text = "ACCEPT",
-                    style = TextStyle(color = Color(colorSureService1), fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                    style = TextStyle(color = Color.Green, fontSize = 16.sp, fontWeight = FontWeight.Bold),
                 )
 
                 val btnEnabled = true
@@ -133,16 +119,14 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                     style = TextStyle(color = Color.Red, fontSize = 16.sp, fontWeight = FontWeight.Bold),
                 )
 
-                val btnEnabled = false
+            }
 
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    TextButton(onClick = { requestAccept(serviceRequest.id) }, enabled = btnEnabled) {
-                        Text(
-                            text = "MORE INFO",
-                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color(colorSureService1)
-                            ))
-                    }
-                }}
+            if (serviceRequest.confirmation == 3) {
+                Text(text = "PAYED",
+                    style = TextStyle(color = Color(colorSureService1), fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                )
+
+            }
 
         }
     }
@@ -153,10 +137,3 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
 
 }
 
-
-
-/*
-0 Waiting
-1 Accept
-2 Rejected
- */
