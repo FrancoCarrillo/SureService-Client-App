@@ -19,6 +19,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.clip
+import coil.compose.AsyncImage
 import vitec.sureservice.data.model.ServiceRequest
 
 var  colorSureService1 = 0xFF0332FC
@@ -30,7 +31,8 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
     val serviceRequests: List<ServiceRequest> by reservationViewModel.serviceRequests.observeAsState(listOf())
 
         LazyColumn (modifier = Modifier
-            .fillMaxSize().fillMaxHeight()
+            .fillMaxSize()
+            .fillMaxHeight()
             .padding(16.dp, bottom = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(serviceRequests) { serviceRequest ->
@@ -51,8 +53,8 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
     Card(elevation = 5.dp) {
         Column(modifier = Modifier.padding(15.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically){
-                Image(
-                    painter = painterResource(id = R.drawable.technician_profile1),
+                AsyncImage(
+                    model = serviceRequest.technician.image_url,
                     contentDescription = "Image Technician Profile 1",
                     modifier = Modifier
                         .size(40.dp)
