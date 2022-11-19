@@ -1,6 +1,7 @@
 package vitec.sureservice.ui.bookAnAppointment
 
 import android.app.DatePickerDialog
+import android.os.Build
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -24,6 +25,7 @@ import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.ui.service.ServiceViewModel
 import vitec.sureservice.ui.theme.BlueColor
 import vitec.sureservice.ui.theme.LilaColor
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -77,7 +79,7 @@ fun ChooseDate(technician: Technician, goToDetailBookAnAppointment: NavHostContr
     val mDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth-${mMonth+1}-$mYear"
+            mDate.value = "$mYear-${mMonth+1}-$mDayOfMonth"
         }, mYear, mMonth, mDay,
     )
 
@@ -137,13 +139,21 @@ fun AppointmentDetails(date: String, technician: Technician, goToDetailBookAnApp
         ServiceRequest()
     )
 
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val currentDate = sdf.format(Date())
+
     Button(
         onClick = {
-            serviceRequestViewModel.createServiceRequestDto(reason)
-            serviceRequestViewModel.postServiceRequest(technician.id)
-            goToDetailBookAnAppointment.navigate(
-                Destinations.DetailBookAnAppointment.createRoute(date, technician.name, technician.last_name, technician.district, serviceRequest.id)
-            )
+            val fd: Date = sdf.parse(date)
+            val sd: Date = sdf.parse(currentDate)
+            if (fd.compareTo(sd) > 0) {
+                serviceRequestViewModel.createServiceRequestDto(reason)
+                serviceRequestViewModel.postServiceRequest(technician.id)
+
+                goToDetailBookAnAppointment.navigate(
+                    Destinations.DetailBookAnAppointment.createRoute(date, technician.name, technician.last_name, technician.district, serviceRequest.id)
+                )
+            }
                   },
         modifier = Modifier
             .fillMaxWidth()
