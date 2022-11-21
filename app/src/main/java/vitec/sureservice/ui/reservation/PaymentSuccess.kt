@@ -22,7 +22,7 @@ import vitec.sureservice.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PaymentSuccess(paymentFailed: ()-> Unit) {
+fun PaymentSuccess(reservation: ()-> Unit) {
 
     var review by remember { mutableStateOf("") }
     var calification by remember { mutableStateOf("") }
@@ -44,7 +44,7 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
 
 
         Text(
-            text = "Successfully Paid",
+            text = "Calification Service",
             style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center
         )
@@ -123,7 +123,7 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
             .height(30.dp))
 
         Button(
-            onClick = { paymentFailed() /* Payment Success Route */ },
+            onClick = { reservation() /* Payment Success Route */ },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

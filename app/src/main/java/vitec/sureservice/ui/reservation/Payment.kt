@@ -1,6 +1,5 @@
 package vitec.sureservice.ui.reservation
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.toSize
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Payment(paymentSuccess: ()-> Unit) {
+fun Payment(reservation: ()-> Unit) {
 
     var cardNumber by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
@@ -178,7 +177,7 @@ fun Payment(paymentSuccess: ()-> Unit) {
             .height(20.dp))
 
         Button(
-            onClick = { paymentSuccess() /* Payment Route */ },
+            onClick = { reservation() /* Payment Route */ },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

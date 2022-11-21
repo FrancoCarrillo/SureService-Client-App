@@ -43,8 +43,11 @@ fun NavGraphBuilder.addReservation(
         val reservationViewModel: ReservationViewModel = hiltViewModel()
         reservationViewModel.getServiceRequestsByClientId()
 
-        Reservation(reservationViewModel)
-            { navController.navigate(Destinations.RequestAccept.createRoute(it))}
+        Reservation(
+            reservationViewModel,
+            { navController.navigate(Destinations.RequestAccept.createRoute(it))},
+            { navController.navigate(Destinations.PaymentSuccess.route) } )
+
     }
 }
 
@@ -69,7 +72,7 @@ fun NavGraphBuilder.addPayment(navController: NavHostController){
         route = Destinations.Payment.route
     ){
         Payment() {
-            navController.navigate(Destinations.PaymentSuccess.route)
+            navController.navigate(Destinations.Reservation.route)
         }
     }
 }
@@ -80,7 +83,7 @@ fun NavGraphBuilder.addPaymentSuccess(navController: NavHostController){
         route = Destinations.PaymentSuccess.route
     ){
         PaymentSuccess() {
-            navController.navigate(Destinations.PaymentFailed.route)
+            navController.navigate(Destinations.Reservation.route)
         }
     }
 }
