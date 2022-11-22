@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import vitec.sureservice.R
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,26 +23,22 @@ var  colorSureService1 = 0xFF0332FC
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)-> Unit) {
-
+fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)-> Unit, paymentSuccess: (Int)-> Unit ) {
     val serviceRequests: List<ServiceRequest> by reservationViewModel.serviceRequests.observeAsState(listOf())
-
         LazyColumn (modifier = Modifier
             .fillMaxSize()
             .fillMaxHeight()
             .padding(16.dp, bottom = 64.dp),
             horizontalAlignment = Alignment.CenterHorizontally){
             items(serviceRequests) { serviceRequest ->
-                CardTechnicianService(serviceRequest, requestAccept)
+                CardTechnicianService(serviceRequest, requestAccept, paymentSuccess)
             }
         }
-
-
 }
 
 
 @Composable
-fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)-> Unit) {
+fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)-> Unit, paymentSuccess: (Int)-> Unit) {
 
     val day = (1..28).random()
     val date = "$day-11-2022"
@@ -77,10 +70,15 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
-                .height(15.dp))
+                .height(5.dp))
 
+            Text(
+                text = "ID: ${serviceRequest.id}",
+                style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+            )
 
             Row() {
+
                 Text(
                     text = "DETAIL: ${serviceRequest.detail}",
                     style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
@@ -128,6 +126,16 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                     style = TextStyle(color = Color(colorSureService1), fontSize = 16.sp, fontWeight = FontWeight.Bold),
                 )
 
+                val btnEnabled = true
+
+                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    TextButton(onClick = { paymentSuccess(serviceRequest.technician.id) }, enabled = btnEnabled) {
+                        Text(
+                            text = "SEND CALIFICATION SERVICE",
+                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color(colorSureService1)
+                            ))
+                    }
+                }
             }
 
         }

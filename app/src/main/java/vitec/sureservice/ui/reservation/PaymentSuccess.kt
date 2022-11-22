@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -18,11 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.ViewModel
 import vitec.sureservice.R
+import vitec.sureservice.data.model.Technician
+import vitec.sureservice.ui.service.ServiceViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PaymentSuccess(paymentFailed: ()-> Unit) {
+fun PaymentSuccess(technicianId: Int, serviceViewModel: ServiceViewModel, technicianViewModel: TechnicianViewModel, reservation: ()-> Unit) {
 
     var review by remember { mutableStateOf("") }
     var calification by remember { mutableStateOf("") }
@@ -30,6 +34,8 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
     val listItems = arrayOf("1","2","3","4","5")
     var expanded by remember { mutableStateOf(false) }
     var textFiledSize by remember {mutableStateOf(Size.Zero)}
+
+    val technician: Technician by serviceViewModel.technician.observeAsState(Technician())
 
     val btnEnabled = calification.isNotEmpty()
 
@@ -44,7 +50,7 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
 
 
         Text(
-            text = "Successfully Paid",
+            text = "Calification Service",
             style = TextStyle(color = Color.Black, fontSize = 42.sp, fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center
         )
@@ -123,7 +129,10 @@ fun PaymentSuccess(paymentFailed: ()-> Unit) {
             .height(30.dp))
 
         Button(
-            onClick = { paymentFailed() /* Payment Success Route */ },
+            onClick = {
+                technicianViewModel.editTechnician(technician, calification.toInt())
+                reservation()
+                      },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

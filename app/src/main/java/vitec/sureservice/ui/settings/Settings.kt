@@ -24,11 +24,10 @@ fun Settings(client: Client,Logout: ()-> Unit, ChangeInformation: (Long)-> Unit)
             .padding(horizontal = 30.dp),
     ) {
         Spacer(modifier = Modifier.height(15.dp))
-        AsyncImage(
-            modifier = Modifier.fillMaxWidth(),
+        /*AsyncImage(
             model = client.image_url,
             contentDescription = "profile image"
-        )
+        )*/
         Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = "${client.name} ${client.last_name}",

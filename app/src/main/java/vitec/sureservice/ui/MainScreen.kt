@@ -94,7 +94,7 @@ sealed class NavigationScreen(
 
     object Reservation: NavigationScreen(
         route = "reservation",
-        title = "reservation",
+        title = "Reservation",
         icon = Icons.Default.Approval
     )
 

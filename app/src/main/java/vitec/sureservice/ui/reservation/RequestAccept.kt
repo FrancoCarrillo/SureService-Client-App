@@ -29,7 +29,7 @@ var  colorSureService2 = 0xFF0332FC
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun RequestAccept(reservationViewModel: ReservationViewModel, payment: ()-> Unit) {
+fun RequestAccept(reservationViewModel: ReservationViewModel, payment: (Int)-> Unit) {
 
     val serviceRequest: ServiceRequest by reservationViewModel.serviceRequest.observeAsState(
         ServiceRequest()
@@ -164,7 +164,7 @@ fun RequestAccept(reservationViewModel: ReservationViewModel, payment: ()-> Unit
             .height(30.dp))
 
         Button(
-            onClick = { payment() },
+            onClick = { payment(serviceRequest.id) },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),
