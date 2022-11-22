@@ -11,6 +11,7 @@ import com.google.accompanist.navigation.animation.composable
 import vitec.sureservice.navigation.Destinations
 import vitec.sureservice.ui.login.LogInViewModel
 import vitec.sureservice.ui.settings.SettingChangeInformation
+import vitec.sureservice.ui.settings.SettingChangePassword
 import vitec.sureservice.ui.settings.SettingViewModel
 import vitec.sureservice.ui.settings.Settings
 
@@ -25,6 +26,7 @@ fun SettingNavigation(navControllerFather: NavHostController, navController: Nav
         ){
             addSettings(navController, navControllerFather)
             addSettingChangeInformation(navController)
+            addChangePassword(navController)
         }
     }
 }
@@ -65,6 +67,22 @@ fun NavGraphBuilder.addSettingChangeInformation(navController: NavHostController
             settingViewModel.client,
             settingViewModel.state.value,
             settingViewModel::updateClient,
+            settingViewModel::hideErrorDialog,
+            navController
+        )
+    }
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.addChangePassword(navController: NavHostController){
+    composable(
+        route = Destinations.ChangePassword.route,
+    ){
+        val settingViewModel: SettingViewModel = hiltViewModel()
+        SettingChangePassword(
+            settingViewModel.client,
+            settingViewModel.state.value,
+            settingViewModel::updatePassword,
             settingViewModel::hideErrorDialog,
             navController
         )

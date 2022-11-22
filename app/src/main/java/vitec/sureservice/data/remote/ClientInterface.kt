@@ -7,14 +7,14 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import vitec.sureservice.data.model.Client
-import vitec.sureservice.data.model.Technician
 import vitec.sureservice.ui.login.LoginDto
 import vitec.sureservice.ui.settings.SettingsDto
+import vitec.sureservice.ui.settings.UpdatePasswordDto
 import vitec.sureservice.ui.signup.SignupDto
 
 interface ClientInterface {
 
-    @POST("auth/sign-in")
+    @POST("users/auth/sign-in")
     fun loginClient(@Body loginDto: LoginDto): Call<Client>
 
     @POST("clients/sign-up")
@@ -26,4 +26,8 @@ interface ClientInterface {
 
     @PUT("clients/{clientId}")
     fun updateClient(@Path("clientId") clientId: Long, @Body settingsDto: SettingsDto): Call<SettingsDto>
+
+    @PUT("users/password/{userId}")
+    fun updatePassword(@Path("userId") userId: Long, @Body updatePasswordDto: UpdatePasswordDto): Call<UpdatePasswordDto>
+
 }

@@ -34,5 +34,14 @@ data class Client (
     var telephone_number: String = ""
 
     @Ignore
+    var image_url: String = ""
+
+    @Ignore
+    var image_Id: String = ""
+
+    @Ignore
     var rol_id: Long = 1
+
+    @Ignore
+    var roles: Array<String> = emptyArray()
 }

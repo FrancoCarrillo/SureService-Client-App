@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import vitec.sureservice.R
 import vitec.sureservice.data.model.Client
 
@@ -23,11 +24,10 @@ fun Settings(client: Client,Logout: ()-> Unit, ChangeInformation: (Long)-> Unit)
             .padding(horizontal = 30.dp),
     ) {
         Spacer(modifier = Modifier.height(15.dp))
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = R.drawable.profile_img),
+        /*AsyncImage(
+            model = client.image_url,
             contentDescription = "profile image"
-        )
+        )*/
         Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = "${client.name} ${client.last_name}",

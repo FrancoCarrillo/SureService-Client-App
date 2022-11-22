@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import vitec.sureservice.data.model.Technician
 import vitec.sureservice.ui.service.ServiceViewModel
@@ -34,8 +35,8 @@ fun TechnicianProfile(technicianId: Int, serviceViewModel: ServiceViewModel, goT
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
-                painter = rememberImagePainter("https://www.maybelline-ma.com/~/media/mny/latam/panama/consejos-de-maquillaje/maquillaje-cara-cuadrada.jpg?h=735&w=735&la=es-PA&hash=6FA3888C30A756C0EE398F69EF0B215FBBA054A4"),
+            AsyncImage(
+                model = technician.image_url,
                 contentDescription = "Foto de perfil",
                 modifier = Modifier
                     .size(80.dp)

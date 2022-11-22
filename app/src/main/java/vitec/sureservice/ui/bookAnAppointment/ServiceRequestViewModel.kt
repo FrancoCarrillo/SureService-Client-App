@@ -14,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import vitec.sureservice.data.local.SureServiceDatabase
 import vitec.sureservice.data.model.Client
+import vitec.sureservice.ui.reservation.ServiceRequestPutDto
 
 class ServiceRequestViewModel(application: Application): AndroidViewModel(application) {
 
@@ -24,10 +25,16 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
     val serviceRequest get() = _serviceRequest
 
     private var serviceRequestDto: ServiceRequestDto = ServiceRequestDto()
+    private var serviceRequestPutDto: ServiceRequestPutDto = ServiceRequestPutDto()
 
     fun createServiceRequestDto(detail: String)
     {
         serviceRequestDto = ServiceRequestDto(detail, 0.0, 0.0, 0)
+    }
+
+    fun createServiceRequestPutDto(confirmation: Int, serviceRequest: ServiceRequest)
+    {
+        serviceRequestPutDto = ServiceRequestPutDto(serviceRequest.total_price, serviceRequest.reservation_price, confirmation)
     }
 
     fun postServiceRequest(technicianId: Int) {
@@ -57,5 +64,37 @@ class ServiceRequestViewModel(application: Application): AndroidViewModel(applic
             }
         }
     }
+
+    fun putServiceRequestById(confirmation: Int, serviceR: ServiceRequest){
+        viewModelScope.launch {
+            try {
+                createServiceRequestPutDto(confirmation, serviceR)
+                val putServiceRequest = serviceRequestInterface.putServiceRequestById(serviceR.id, serviceRequestPutDto)
+                putServiceRequest.enqueue(object: Callback<ServiceRequest>{
+                    override fun onResponse(
+                        call: Call<ServiceRequest>,
+                        response: Response<ServiceRequest>
+                    ) {
+                        serviceRequest.postValue(response.body()!!)
+                    }
+
+                    override fun onFailure(call: Call<ServiceRequest>, t: Throwable) {
+                        Log.d("Fail", t.toString())
+                    }
+
+                })
+
+            }
+
+            catch (e: Exception) {
+                Log.e("Error", e.toString())
+            }
+
+        }
+
+    }
+
+
+
 
 }

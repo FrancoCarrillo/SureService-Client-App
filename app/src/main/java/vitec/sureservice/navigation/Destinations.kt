@@ -8,12 +8,12 @@ sealed class Destinations(
 ){
 
     object Login: Destinations("login", emptyList())
+    object ChangePassword: Destinations("change_password", emptyList())
     object Signup: Destinations("signup", emptyList())
     object Home: Destinations("home", emptyList())
     object Service: Destinations("service", emptyList())
     object Reservation: Destinations("reservation", emptyList())
     object Settings: Destinations("settings", emptyList())
-    object Logout: Destinations("logout", emptyList())
     object TechnicianProfile: Destinations("technicianProfile/{technicianId}", emptyList()){
         fun createRoute(technicianId: Int) = "technicianProfile/$technicianId"
     }
@@ -33,8 +33,12 @@ sealed class Destinations(
     object RequestAccept: Destinations ("requestAccept/{serviceRequestId}", emptyList()) {
         fun createRoute(serviceRequestId: Int) = "requestAccept/$serviceRequestId"
     }
-    object Payment: Destinations ("payment", emptyList())
-    object PaymentSuccess: Destinations ("paymentSuccess", emptyList())
+    object Payment: Destinations ("payment/{serviceRequestId}", emptyList()) {
+        fun createRoute(serviceRequestId: Int) = "payment/$serviceRequestId"
+    }
+    object PaymentSuccess: Destinations ("paymentSuccess/{technicianId}", emptyList()){
+        fun createRoute(technicianId: Int) = "paymentSuccess/$technicianId"
+    }
     object PaymentFailed: Destinations ("paymentFailed", emptyList())
 
 }
