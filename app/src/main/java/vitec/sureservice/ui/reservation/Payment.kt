@@ -1,11 +1,15 @@
 package vitec.sureservice.ui.reservation
 
+import android.app.Service
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -17,11 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import vitec.sureservice.data.model.ServiceRequest
+import vitec.sureservice.data.model.Technician
+import vitec.sureservice.ui.bookAnAppointment.ServiceRequestViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Payment(reservation: ()-> Unit) {
+fun Payment(serviceRequestId: Int, reservationViewModel: ReservationViewModel, serviceRequestViewModel: ServiceRequestViewModel, reservation: ()-> Unit) {
 
     var cardNumber by remember { mutableStateOf("") }
     var month by remember { mutableStateOf("") }
@@ -33,6 +40,8 @@ fun Payment(reservation: ()-> Unit) {
     val listItems = arrayOf("01","02","03","04","05","06","07","08","09","10","11","12")
     var expanded by remember { mutableStateOf(false) }
     var textFiledSize by remember {mutableStateOf(Size.Zero)}
+
+    val serviceRequest: ServiceRequest by reservationViewModel.serviceRequest.observeAsState(ServiceRequest())
 
     val btnEnabled = cardNumber.isNotEmpty() && month.isNotEmpty() && year.isNotEmpty() && securityCode.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()
 
@@ -96,7 +105,11 @@ fun Payment(reservation: ()-> Unit) {
                     readOnly = true,
                     label = { Text(text = "MM") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
-                    modifier = Modifier.width(115.dp).onGloballyPositioned { coordinates -> textFiledSize = coordinates.size.toSize() },
+                    modifier = Modifier
+                        .width(115.dp)
+                        .onGloballyPositioned { coordinates ->
+                            textFiledSize = coordinates.size.toSize()
+                        },
                 )
                 // menu
                 ExposedDropdownMenu(
@@ -177,7 +190,11 @@ fun Payment(reservation: ()-> Unit) {
             .height(20.dp))
 
         Button(
-            onClick = { reservation() /* Payment Route */ },
+            onClick = {
+                reservationViewModel.postReservation(serviceRequestId)
+                serviceRequestViewModel.putServiceRequestById(3, serviceRequest)
+                reservation() /* Payment Route */
+                      },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(colorSureService2)),

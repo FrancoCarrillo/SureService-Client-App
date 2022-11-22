@@ -4,9 +4,11 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import vitec.sureservice.data.model.ServiceRequest
 import vitec.sureservice.ui.bookAnAppointment.ServiceRequestDto
+import vitec.sureservice.ui.reservation.ServiceRequestPutDto
 
 interface ServiceRequestInterface {
 
@@ -18,5 +20,8 @@ interface ServiceRequestInterface {
 
     @GET("services/{serviceRequestId}")
     fun getServiceRequestById(@Path("serviceRequestId") serviceRequestId: Int): Call<ServiceRequest>
+
+    @PUT("services/{serviceRequestId}")
+    fun putServiceRequestById( @Path("serviceRequestId") serviceRequestId: Int, @Body serviceRequestPutDto: ServiceRequestPutDto): Call<ServiceRequest>
 
 }

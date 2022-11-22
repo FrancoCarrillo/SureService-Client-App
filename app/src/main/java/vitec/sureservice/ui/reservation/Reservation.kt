@@ -23,10 +23,8 @@ var  colorSureService1 = 0xFF0332FC
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)-> Unit, paymentSuccess: ()-> Unit ) {
-
+fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)-> Unit, paymentSuccess: (Int)-> Unit ) {
     val serviceRequests: List<ServiceRequest> by reservationViewModel.serviceRequests.observeAsState(listOf())
-
         LazyColumn (modifier = Modifier
             .fillMaxSize()
             .fillMaxHeight()
@@ -36,13 +34,11 @@ fun Reservation(reservationViewModel: ReservationViewModel, requestAccept: (Int)
                 CardTechnicianService(serviceRequest, requestAccept, paymentSuccess)
             }
         }
-
-
 }
 
 
 @Composable
-fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)-> Unit, paymentSuccess: ()-> Unit) {
+fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)-> Unit, paymentSuccess: (Int)-> Unit) {
 
     val day = (1..28).random()
     val date = "$day-11-2022"
@@ -74,10 +70,15 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
-                .height(15.dp))
+                .height(5.dp))
 
+            Text(
+                text = "ID: ${serviceRequest.id}",
+                style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+            )
 
             Row() {
+
                 Text(
                     text = "DETAIL: ${serviceRequest.detail}",
                     style = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
@@ -128,7 +129,7 @@ fun CardTechnicianService(serviceRequest: ServiceRequest, requestAccept: (Int)->
                 val btnEnabled = true
 
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    TextButton(onClick = { paymentSuccess() }, enabled = btnEnabled) {
+                    TextButton(onClick = { paymentSuccess(serviceRequest.technician.id) }, enabled = btnEnabled) {
                         Text(
                             text = "SEND CALIFICATION SERVICE",
                             style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color(colorSureService1)

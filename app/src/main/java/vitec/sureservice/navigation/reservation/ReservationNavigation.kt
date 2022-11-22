@@ -1,5 +1,7 @@
 package vitec.sureservice.navigation.reservation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
@@ -10,7 +12,10 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import vitec.sureservice.navigation.Destinations
+import vitec.sureservice.ui.bookAnAppointment.ServiceRequestViewModel
 import vitec.sureservice.ui.reservation.*
+import vitec.sureservice.ui.service.ServiceViewModel
+
 
 @ExperimentalAnimationApi
 @Composable
@@ -46,7 +51,7 @@ fun NavGraphBuilder.addReservation(
         Reservation(
             reservationViewModel,
             { navController.navigate(Destinations.RequestAccept.createRoute(it))},
-            { navController.navigate(Destinations.PaymentSuccess.route) } )
+            { navController.navigate(Destinations.PaymentSuccess.createRoute(it)) } )
 
     }
 }
@@ -61,17 +66,22 @@ fun NavGraphBuilder.addRequestAccept(navController: NavHostController){
         val reservationViewModel: ReservationViewModel = hiltViewModel()
         reservationViewModel.getServiceRequestById(serviceRequestId.toInt())
         RequestAccept(reservationViewModel) {
-            navController.navigate(Destinations.Payment.route)
+            navController.navigate(Destinations.Payment.createRoute(it))
         }
     }
 }
+
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.addPayment(navController: NavHostController){
     composable(
         route = Destinations.Payment.route
-    ){
-        Payment() {
+    ){ navBackStackEntry ->
+        val serviceRequestId = navBackStackEntry.arguments?.getString("serviceRequestId")!!
+        val reservationViewModel: ReservationViewModel = hiltViewModel()
+        reservationViewModel.getServiceRequestById(serviceRequestId.toInt())
+        val serviceRequestViewModel: ServiceRequestViewModel = hiltViewModel()
+        Payment(serviceRequestId.toInt(), reservationViewModel, serviceRequestViewModel) {
             navController.navigate(Destinations.Reservation.route)
         }
     }
@@ -82,7 +92,13 @@ fun NavGraphBuilder.addPaymentSuccess(navController: NavHostController){
     composable(
         route = Destinations.PaymentSuccess.route
     ){
-        PaymentSuccess() {
+            navBackStackEntry ->
+        val technicianId = navBackStackEntry.arguments?.getString("technicianId")!!
+        val serviceViewModel: ServiceViewModel = hiltViewModel()
+        serviceViewModel.getATechnicianById(technicianId.toInt())
+        val technicianViewModel: TechnicianViewModel = hiltViewModel()
+
+        PaymentSuccess(technicianId.toInt(), serviceViewModel, technicianViewModel) {
             navController.navigate(Destinations.Reservation.route)
         }
     }
